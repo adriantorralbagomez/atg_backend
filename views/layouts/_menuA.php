@@ -21,8 +21,6 @@ return [
         "items" => [
             ['label' => 'Órdenes', 'url' => ['/orden']],
             ['label' => 'Pedidos', 'url' => ['/pedido']],
-            //['label' => 'Pedido info', 'url' => ['/pedidoinfo']],
-            //['label' => 'Órden Pedido info', 'url' => ['/orden-pedidoinfo']],
         ],
     ],
     [
@@ -35,6 +33,6 @@ return [
             ['label' => 'Sectores', 'url' => ['/sector']],
         ],
     ],
-
+    ['label' => 'Stock de materiales', 'url' => ['/material'], "icon" => "table"],
 
 ];

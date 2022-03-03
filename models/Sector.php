@@ -57,7 +57,7 @@ class Sector extends \yii\db\ActiveRecord
      */
     public function getCajas()
     {
-        return $this->hasMany(Caja::className(), ['sector_id' => 'id']);
+        return $this->hasMany(Caja::class, ['sector_id' => 'id']);
     }
 
     public static function lookup(){

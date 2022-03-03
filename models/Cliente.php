@@ -58,7 +58,7 @@ class Cliente extends \yii\db\ActiveRecord
      */
     public function getEtiquetas()
     {
-        return $this->hasMany(Etiqueta::className(), ['cliente_id' => 'id']);
+        return $this->hasMany(Etiqueta::class, ['cliente_id' => 'id']);
     }
 
     /**
@@ -68,6 +68,6 @@ class Cliente extends \yii\db\ActiveRecord
      */
     public function getPedidos()
     {
-        return $this->hasMany(Pedido::className(), ['cliente_id' => 'id']);
+        return $this->hasMany(Pedido::class, ['cliente_id' => 'id']);
     }
 }

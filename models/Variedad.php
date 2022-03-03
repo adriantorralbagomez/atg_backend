@@ -55,7 +55,7 @@ class Variedad extends \yii\db\ActiveRecord
      */
     public function getOrdenPedidoinfos()
     {
-        return $this->hasMany(OrdenPedidoinfo::className(), ['variedad_id' => 'id']);
+        return $this->hasMany(OrdenPedidoinfo::class, ['variedad_id' => 'id']);
     }
 
     /**
@@ -65,7 +65,7 @@ class Variedad extends \yii\db\ActiveRecord
      */
     public function getOrdens()
     {
-        return $this->hasMany(Orden::className(), ['variedad_id' => 'id']);
+        return $this->hasMany(Orden::class, ['variedad_id' => 'id']);
     }
 
     /**
@@ -75,7 +75,7 @@ class Variedad extends \yii\db\ActiveRecord
      */
     public function getParcelas()
     {
-        return $this->hasMany(Parcela::className(), ['variedad_id' => 'id']);
+        return $this->hasMany(Parcela::class, ['variedad_id' => 'id']);
     }
 
     /**
@@ -85,7 +85,7 @@ class Variedad extends \yii\db\ActiveRecord
      */
     public function getPedidoinfos()
     {
-        return $this->hasMany(Pedidoinfo::className(), ['variedad_id' => 'id']);
+        return $this->hasMany(Pedidoinfo::class, ['variedad_id' => 'id']);
     }
 
     public static function lookup(){

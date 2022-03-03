@@ -58,7 +58,7 @@ class Tipocaja extends \yii\db\ActiveRecord
      */
     public function getCajas()
     {
-        return $this->hasMany(Caja::className(), ['tipocaja_id' => 'id']);
+        return $this->hasMany(Caja::class, ['tipocaja_id' => 'id']);
     }
 
     public static function lookup(){

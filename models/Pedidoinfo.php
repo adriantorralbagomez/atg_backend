@@ -35,8 +35,8 @@ class Pedidoinfo extends \yii\db\ActiveRecord
         return [
             [['pedido_id', 'variedad_id', 'cantidad'], 'required'],
             [['pedido_id', 'variedad_id', 'cantidad'], 'integer'],
-            [['pedido_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pedido::className(), 'targetAttribute' => ['pedido_id' => 'id']],
-            [['variedad_id'], 'exist', 'skipOnError' => true, 'targetClass' => Variedad::className(), 'targetAttribute' => ['variedad_id' => 'id']],
+            [['pedido_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pedido::class, 'targetAttribute' => ['pedido_id' => 'id']],
+            [['variedad_id'], 'exist', 'skipOnError' => true, 'targetClass' => Variedad::class, 'targetAttribute' => ['variedad_id' => 'id']],
         ];
     }
 
@@ -60,7 +60,7 @@ class Pedidoinfo extends \yii\db\ActiveRecord
      */
     public function getOrdenPedidoinfos()
     {
-        return $this->hasMany(OrdenPedidoinfo::className(), ['pedidoinfo_id' => 'id']);
+        return $this->hasMany(OrdenPedidoinfo::class, ['pedidoinfo_id' => 'id']);
     }
 
     /**
@@ -70,7 +70,7 @@ class Pedidoinfo extends \yii\db\ActiveRecord
      */
     public function getPedido()
     {
-        return $this->hasOne(Pedido::className(), ['id' => 'pedido_id']);
+        return $this->hasOne(Pedido::class, ['id' => 'pedido_id']);
     }
 
     /**
@@ -80,7 +80,7 @@ class Pedidoinfo extends \yii\db\ActiveRecord
      */
     public function getVariedad()
     {
-        return $this->hasOne(Variedad::className(), ['id' => 'variedad_id']);
+        return $this->hasOne(Variedad::class, ['id' => 'variedad_id']);
     }
 
     public static function cantidad($id){

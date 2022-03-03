@@ -33,7 +33,7 @@ class Etiqueta extends \yii\db\ActiveRecord
             [['cliente_id', 'formato'], 'required'],
             [['cliente_id'], 'integer'],
             [['formato'], 'string'],
-            [['cliente_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['cliente_id' => 'id']],
+            [['cliente_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::class, 'targetAttribute' => ['cliente_id' => 'id']],
         ];
     }
 
@@ -56,7 +56,7 @@ class Etiqueta extends \yii\db\ActiveRecord
      */
     public function getCajas()
     {
-        return $this->hasMany(Caja::className(), ['etiqueta_id' => 'id']);
+        return $this->hasMany(Caja::class, ['etiqueta_id' => 'id']);
     }
 
     /**
@@ -66,6 +66,6 @@ class Etiqueta extends \yii\db\ActiveRecord
      */
     public function getCliente()
     {
-        return $this->hasOne(Cliente::className(), ['id' => 'cliente_id']);
+        return $this->hasOne(Cliente::class, ['id' => 'cliente_id']);
     }
 }

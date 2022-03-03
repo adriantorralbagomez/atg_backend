@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'pesokg',
             'detalles:ntext',
             [
-                'class' => ActionColumn::className(),
+                'class' => ActionColumn::class,
                 'urlCreator' => function ($action, Tipocaja $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }

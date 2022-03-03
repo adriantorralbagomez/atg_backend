@@ -37,8 +37,8 @@ class Parcela extends \yii\db\ActiveRecord
             [['variedad_id', 'finca_id', 'nombre', 'cant_total', 'cant_disp'], 'required'],
             [['variedad_id', 'finca_id', 'cant_total', 'cant_disp'], 'integer'],
             [['nombre'], 'string', 'max' => 30],
-            [['variedad_id'], 'exist', 'skipOnError' => true, 'targetClass' => Variedad::className(), 'targetAttribute' => ['variedad_id' => 'id']],
-            [['finca_id'], 'exist', 'skipOnError' => true, 'targetClass' => Finca::className(), 'targetAttribute' => ['finca_id' => 'id']],
+            [['variedad_id'], 'exist', 'skipOnError' => true, 'targetClass' => Variedad::class, 'targetAttribute' => ['variedad_id' => 'id']],
+            [['finca_id'], 'exist', 'skipOnError' => true, 'targetClass' => Finca::class, 'targetAttribute' => ['finca_id' => 'id']],
         ];
     }
 

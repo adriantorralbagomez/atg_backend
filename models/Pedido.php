@@ -47,7 +47,7 @@ class Pedido extends \yii\db\ActiveRecord
             [['cliente_id', 'cantidad'], 'integer'],
             [['estado'], 'string'],
             [['fecha'], 'safe'],
-            [['cliente_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['cliente_id' => 'id']],
+            [['cliente_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::class, 'targetAttribute' => ['cliente_id' => 'id']],
         ];
     }
 
@@ -72,7 +72,7 @@ class Pedido extends \yii\db\ActiveRecord
      */
     public function getCliente()
     {
-        return $this->hasOne(Cliente::className(), ['id' => 'cliente_id']);
+        return $this->hasOne(Cliente::class, ['id' => 'cliente_id']);
     }
 
     /**
@@ -82,6 +82,6 @@ class Pedido extends \yii\db\ActiveRecord
      */
     public function getPedidoinfos()
     {
-        return $this->hasMany(Pedidoinfo::className(), ['pedido_id' => 'id']);
+        return $this->hasMany(Pedidoinfo::class, ['pedido_id' => 'id']);
     }
 }
