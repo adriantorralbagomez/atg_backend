@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'descripcion')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'tipocaja_id')->textInput() ?>
+    <?= $form->field($model, 'tipocaja_id')->dropDownList($this->context->getTiposCaja(),['prompt' => 'Selecciona tipo de caja...']) ?>
 
     <?= $form->field($model, 'stock_min')->textInput() ?>
 

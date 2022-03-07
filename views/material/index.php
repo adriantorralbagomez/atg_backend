@@ -20,8 +20,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Crear Material', ['create'], ['class' => 'btn btn-success']) ?>
+        <!--Leyenda stock-->
+        <span>
+            <?=Html::label("Falta stock", $for=null, ['style'=>'background-color: lightcoral; padding:1%; border-radius:12px; color:white;'])?>
+            <?=Html::label("Queda poco stock", $for=null, ['style'=>'background-color: gold; padding:1%; border-radius:12px; color:white;'])?>
+            <?=Html::label("Suficiente stock", $for=null, ['style'=>'background-color: lightgreen; padding:1%; border-radius:12px; color:white;'])?>
+        </span>
     </p>
-
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -31,60 +36,59 @@ $this->params['breadcrumbs'][] = $this->title;
             'class' => 'table-responsive',
         ],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
             [
                 'label' => 'Nombre',
-                'attribute'=>'nombre',
+                'attribute' => 'nombre',
                 'value' => 'nombre',
             ],
             [
                 'label' => 'Descripción',
-                'attribute'=>'descripcion',
+                'attribute' => 'descripcion',
                 'value' => 'descripcion',
             ],
             [
                 'label' => 'Stock Mínimo',
-                'attribute'=>'stock_min',
+                'attribute' => 'stock_min',
                 'value' => 'stock_min',
             ],
             [
                 'label' => 'Stock Actual',
-                'attribute'=>'stock_act',
+                'attribute' => 'stock_act',
                 'value' => 'stock_act',
                 'contentOptions' =>  function ($data) {
-                    if($data->stock_act > $data->stock_min){ 
+                    if ($data->stock_act > $data->stock_min) {
                         //Si el stock actual supera el mínimo
                         //Calcular porcentaje del stock mínimo sobre el stock actual
                         $dif = $data->stock_act - $data->stock_min;
                         $porcentaje = ((float)$dif * 100) / $data->stock_act;
                         $porcentaje = round($porcentaje, 0);  //Eliminar los decimales
-                        
+
                         if ($porcentaje <= 30) {
                             //Cerca del mínimo de stock
                             return ['style' => 'background-color:LightCoral; color:white;'];
-                        } else if($porcentaje <=60) {
+                        } else if ($porcentaje <= 60) {
                             //Stock "normal"
                             return ['style' => 'background-color:Gold; color:white;'];
-                        }else if($porcentaje > 60) {
+                        } else if ($porcentaje > 60) {
                             //Hay stock de sobra
                             return ['style' => 'background-color:LightGreen; color:white;'];
                         }
-                    }else{
+                    } else {
                         //Stock por debajo de mínimos
                         return ['style' => 'background-color:LightCoral; color:white;'];
                     }
                 },
             ],
             [
-                'label' => 'Tipo',
-                'attribute'=>'tipocaja_id',
+                'label' => 'Tipo de caja',
+                'attribute' => 'tipocaja_id',
                 'filter' => $this->context->getTiposCaja(),
                 'value' => 'tipocaja.nombre',
             ],
-            
+
             [
                 'class' => ActionColumn::class,
-                
+
             ],
         ],
     ]); ?>

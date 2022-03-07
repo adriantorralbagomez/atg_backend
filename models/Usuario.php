@@ -27,6 +27,7 @@ class Usuario extends ActiveRecord implements IdentityInterface
 
     static $roles = [
         'A' => 'Administrador',
+        'G' => 'Gestión',
         'CC' => 'Control Campo',
         'CP' => 'Control Planta',
         'PP' => 'Producción',

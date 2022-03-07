@@ -49,7 +49,7 @@ class Material extends \yii\db\ActiveRecord
             'id' => 'ID',
             'nombre' => 'Nombre',
             'descripcion' => 'Descripcion',
-            'tipocaja_id' => 'Tipocaja ID',
+            'tipocaja_id' => 'Tipo de caja',
             'stock_min' => 'Stock Min',
             'stock_act' => 'Stock Act',
         ];
