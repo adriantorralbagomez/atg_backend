@@ -40,12 +40,13 @@ class MaterialController extends \yii\web\Controller
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'searchModel'=>$searchModel
+            'searchModel' => $searchModel
         ]);
     }
 
     //Obtiene todos los tipos de Caja
-    public function getTiposCaja(){
+    public function getTiposCaja()
+    {
         return Tipocaja::lookup();
     }
     /**
@@ -59,6 +60,9 @@ class MaterialController extends \yii\web\Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                //Después de guardear y antes de redireccionar
+                //Se comprueba stock
+                $this->comprobarStock($model);
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -68,6 +72,13 @@ class MaterialController extends \yii\web\Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    //Comprobar stock actual
+    public function comprobarStock($model)
+    {
+        //Si queda poco stock se crea un pedido para ese material
+        
     }
 
     /**
@@ -82,6 +93,9 @@ class MaterialController extends \yii\web\Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            //Después de guardear y antes de redireccionar
+            //Se comprueba stock
+            $this->comprobarStock($model);
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Crear Material', ['create'], ['class' => 'btn btn-success']) ?>
         <!--Leyenda stock-->
         <span>
-            <?=Html::label("Falta stock", $for=null, ['style'=>'background-color: lightcoral; padding:1%; border-radius:12px; color:white;'])?>
+            <?=Html::label("No hay suficiente stock", $for=null, ['style'=>'background-color: lightcoral; padding:1%; border-radius:12px; color:white;'])?>
             <?=Html::label("Queda poco stock", $for=null, ['style'=>'background-color: gold; padding:1%; border-radius:12px; color:white;'])?>
             <?=Html::label("Suficiente stock", $for=null, ['style'=>'background-color: lightgreen; padding:1%; border-radius:12px; color:white;'])?>
         </span>
@@ -73,9 +73,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             //Hay stock de sobra
                             return ['style' => 'background-color:LightGreen; color:white;'];
                         }
-                    } else {
+                    } else if($data->stock_act < $data->stock_min) {
                         //Stock por debajo de mínimos
                         return ['style' => 'background-color:LightCoral; color:white;'];
+                    } else if ($data->stock_act == $data->stock_min) {
+                        //Hay stock de sobra
+                        return ['style' => 'background-color:LightGreen; color:white;'];
                     }
                 },
             ],
