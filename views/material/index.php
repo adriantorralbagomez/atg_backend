@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         } else if ($porcentaje <= 60) {
                             //Stock "normal"
                             return ['style' => 'background-color:Gold; color:white;'];
-                        } else if ($porcentaje > 60) {
+                        } else if ($porcentaje > 80) {
                             //Hay stock de sobra
                             return ['style' => 'background-color:LightGreen; color:white;'];
                         }
