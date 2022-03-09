@@ -64,4 +64,31 @@ class Material extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Tipocaja::class, ['id' => 'tipocaja_id']);
     }
+
+    public static function comprobarStock($data){
+        if ($data->stock_act > $data->stock_min) {
+            //Si el stock actual supera el mínimo
+            //Calcular porcentaje del stock mínimo sobre el stock actual
+            $dif = $data->stock_act - $data->stock_min;
+            $porcentaje = ((float)$dif * 100) / $data->stock_act;
+            $porcentaje = round($porcentaje, 0);  //Eliminar los decimales
+
+            if ($porcentaje <= 30) {
+                //Cerca del mínimo de stock
+                return 'LightCoral';
+            } else if ($porcentaje <= 60) {
+                //Stock "normal"
+                return 'Gold';
+            } else if ($porcentaje > 80) {
+                //Hay stock de sobra
+                return 'LightGreen';
+            }
+        } else if($data->stock_act < $data->stock_min) {
+            //Stock por debajo de mínimos
+            return 'LightCoral';
+        } else if ($data->stock_act == $data->stock_min) {
+            //Hay stock de sobra
+            return 'LightGreen';
+        }
+    }
 }

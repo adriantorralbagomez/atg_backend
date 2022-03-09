@@ -56,30 +56,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'stock_act',
                 'value' => 'stock_act',
                 'contentOptions' =>  function ($data) {
-                    if ($data->stock_act > $data->stock_min) {
-                        //Si el stock actual supera el mínimo
-                        //Calcular porcentaje del stock mínimo sobre el stock actual
-                        $dif = $data->stock_act - $data->stock_min;
-                        $porcentaje = ((float)$dif * 100) / $data->stock_act;
-                        $porcentaje = round($porcentaje, 0);  //Eliminar los decimales
-
-                        if ($porcentaje <= 30) {
-                            //Cerca del mínimo de stock
-                            return ['style' => 'background-color:LightCoral; color:white;'];
-                        } else if ($porcentaje <= 60) {
-                            //Stock "normal"
-                            return ['style' => 'background-color:Gold; color:white;'];
-                        } else if ($porcentaje > 80) {
-                            //Hay stock de sobra
-                            return ['style' => 'background-color:LightGreen; color:white;'];
-                        }
-                    } else if($data->stock_act < $data->stock_min) {
-                        //Stock por debajo de mínimos
-                        return ['style' => 'background-color:LightCoral; color:white;'];
-                    } else if ($data->stock_act == $data->stock_min) {
-                        //Hay stock de sobra
-                        return ['style' => 'background-color:LightGreen; color:white;'];
-                    }
+                    //Se obtiene el color de fondo en base al stock mínimo y
+                    //stock actual
+                    $color = Material::comprobarStock($data);
+                    return ['style' => 'background-color:'.$color.'; color:white;'];
                 },
             ],
             [
