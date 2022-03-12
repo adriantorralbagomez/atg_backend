@@ -54,6 +54,6 @@ class Proveedor extends \yii\db\ActiveRecord
      */
     public function getProveedorMaterials()
     {
-        return $this->hasMany(ProveedorMaterial::className(), ['proveedor_id' => 'id']);
+        return $this->hasMany(ProveedorMaterial::class, ['proveedor_id' => 'id']);
     }
 }

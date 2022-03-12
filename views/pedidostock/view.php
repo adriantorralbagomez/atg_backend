@@ -4,16 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\OrdenPedidoinfo */
-
-checkLogged();
+/* @var $model app\models\Pedidostock */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Orden Pedidoinfos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Pedidostocks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="orden-pedidoinfo-view">
+<div class="pedidostock-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -22,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Eliminar', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Desea eliminar este elemento?',
+                'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -31,15 +29,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'orden_id',
-            'pedidoinfo_id',
-            'variedad_id',
-            [
-                'label' => 'Variedad',
-                'attribute' => 'variedad.nombre'
-            ],
+            'proveedor_material_id',
             'cantidad',
+            'fecha',
+            'estado',
         ],
     ]) ?>
 

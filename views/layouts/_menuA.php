@@ -35,5 +35,7 @@ return [
     ],
     ['label' => 'Stock de materiales', 'url' => ['/material'], "icon" => "table"],
     ['label' => 'Proveedores', 'url' => ['/proveedor'], "icon" => "address-book"],
+    ['label' => 'Proveedores - Material', 'url' => ['/proveedor-material'], "icon" => "clipboard"],
+    ['label' => 'Pedidos de materiales', 'url' => ['/pedidostock'], "icon" => "tasks"],
 
 ];
