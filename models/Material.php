@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "material".
@@ -90,5 +91,14 @@ class Material extends \yii\db\ActiveRecord
             //Hay stock de sobra
             return 'LightGreen';
         }
+    }
+
+    public static function stockActual(){
+        //para el dropdown list (select) del filtrado de stock actual
+        return [
+            "1000"=>"No hay suficiente stock",
+            "1000000"=>"Queda poco stock",
+            "20000"=>"Suficiente stock"
+        ];
     }
 }

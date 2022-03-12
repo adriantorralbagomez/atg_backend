@@ -1,10 +1,11 @@
 <?php
 
-use app\models\Material;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\models\Material;
 use yii\grid\ActionColumn;
+use yii\bootstrap4\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -17,16 +18,30 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="material-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
+    <?php $form = ActiveForm::begin(); ?>
     <p>
         <?= Html::a('Crear Material', ['create'], ['class' => 'btn btn-success']) ?>
         <!--Leyenda stock-->
         <span>
-            <?=Html::label("No hay suficiente stock", $for=null, ['style'=>'background-color: lightcoral; padding:1%; border-radius:12px; color:white;'])?>
-            <?=Html::label("Queda poco stock", $for=null, ['style'=>'background-color: gold; padding:1%; border-radius:12px; color:white;'])?>
-            <?=Html::label("Suficiente stock", $for=null, ['style'=>'background-color: lightgreen; padding:1%; border-radius:12px; color:white;'])?>
+            <?= Html::label("No hay suficiente stock", $for = null, ['style' => 'background-color: lightcoral; padding:1%; border-radius:12px; color:white;']) ?>
+            <?= Html::label("Queda poco stock", $for = null, ['style' => 'background-color: gold; padding:1%; border-radius:12px; color:white;']) ?>
+            <?= Html::label("Suficiente stock", $for = null, ['style' => 'background-color: lightgreen; padding:1%; border-radius:12px; color:white;']) ?>
         </span>
     </p>
+
+    <?php 
+        echo $form->field($searchModel, 'stock_act')->dropDownList(Material::stockActual(),
+        ['prompt' => 'Selecciona stock actual...','id'=>'selvar']); 
+
+        $url = yii\helpers\Url::to(['material/index']);
+        $this->registerJs("$('#selvar').on('change', function() {
+        window.location.href='$url&stock_act='+$(this).val();
+        });",
+        \yii\web\View::POS_READY,
+        'my-button-handler'
+        );
+
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -59,8 +74,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     //Se obtiene el color de fondo en base al stock mínimo y
                     //stock actual
                     $color = Material::comprobarStock($data);
-                    return ['style' => 'background-color:'.$color.'; color:white;'];
+                    return ['style' => 'background-color:' . $color . '; color:white;'];
                 },
+                
             ],
             [
                 'label' => 'Tipo de caja',
@@ -76,5 +92,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-
+    <?php ActiveForm::end(); ?>
 </div>

@@ -3,16 +3,14 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\OrdenPedidoinfo */
+/* @var $model app\models\Proveedor */
 
-checkLogged();
-
-$this->title = 'Actualizar Orden Pedidoinfo: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Orden Pedidoinfos', 'url' => ['index']];
+$this->title = 'Actualizar Proveedor: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Proveedors', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="orden-pedidoinfo-update">
+<div class="proveedor-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

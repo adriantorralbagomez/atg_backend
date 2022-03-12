@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 checkLogged();
 
-$this->title = 'Update Pedidoinfo: ' . $model->id;
+$this->title = 'Actualizar Pedidoinfo: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Pedidoinfos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->pedido_id, 'url' => ['view', 'id' => $model->pedido_id]];
 $this->params['breadcrumbs'][] = 'Update';

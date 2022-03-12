@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 checkLogged();
 
-$this->title = 'Create Pedidoinfo';
+$this->title = 'Crear Pedidoinfo';
 $this->params['breadcrumbs'][] = ['label' => 'Pedidoinfos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

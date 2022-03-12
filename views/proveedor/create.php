@@ -3,15 +3,13 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\OrdenPedidoinfo */
+/* @var $model app\models\Proveedor */
 
-checkLogged();
-
-$this->title = 'Crear Orden Pedidoinfo';
-$this->params['breadcrumbs'][] = ['label' => 'Orden Pedidoinfos', 'url' => ['index']];
+$this->title = 'Crear Proveedor';
+$this->params['breadcrumbs'][] = ['label' => 'Proveedors', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="orden-pedidoinfo-create">
+<div class="proveedor-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

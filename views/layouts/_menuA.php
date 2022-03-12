@@ -34,5 +34,6 @@ return [
         ],
     ],
     ['label' => 'Stock de materiales', 'url' => ['/material'], "icon" => "table"],
+    ['label' => 'Proveedores', 'url' => ['/proveedor'], "icon" => "address-book"],
 
 ];
