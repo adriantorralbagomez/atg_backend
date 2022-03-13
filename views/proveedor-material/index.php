@@ -18,7 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="material-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php $form = ActiveForm::begin(); ?>
     <p>
         <?= Html::a('Crear proveedor - material', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
@@ -53,5 +52,4 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-    <?php ActiveForm::end(); ?>
 </div>

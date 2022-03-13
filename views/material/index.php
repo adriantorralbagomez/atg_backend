@@ -18,7 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="material-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php $form = ActiveForm::begin(); ?>
     <p>
         <?= Html::a('Crear Material', ['create'], ['class' => 'btn btn-success']) ?>
         <!--Leyenda stock-->
@@ -30,16 +29,16 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php 
-        echo $form->field($searchModel, 'stock_act')->dropDownList(Material::stockActual(),
-        ['prompt' => 'Selecciona stock actual...','id'=>'selvar']); 
+        // echo $form->field($searchModel, 'stock_act')->dropDownList(Material::stockActual(),
+        // ['prompt' => 'Selecciona stock actual...','id'=>'selvar']); 
 
-        $url = yii\helpers\Url::to(['material/index']);
-        $this->registerJs("$('#selvar').on('change', function() {
-        window.location.href='$url&stock_act='+$(this).val();
-        });",
-        \yii\web\View::POS_READY,
-        'my-button-handler'
-        );
+        // $url = yii\helpers\Url::to(['material/index']);
+        // $this->registerJs("$('#selvar').on('change', function() {
+        // window.location.href='$url&stock_act='+$(this).val();
+        // });",
+        // \yii\web\View::POS_READY,
+        // 'my-button-handler'
+        // );
 
     ?>
 
@@ -92,5 +91,4 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-    <?php ActiveForm::end(); ?>
 </div>
