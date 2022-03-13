@@ -17,7 +17,7 @@ class ProveedorMaterialSearch extends ProveedorMaterial
     public function rules()
     {
         return [
-            [['id', 'material_id', 'proveedor_id'], 'integer'],
+            [['id', 'material_id', 'proveedor_id', 'precio'], 'integer'],
         ];
     }
 
@@ -60,6 +60,7 @@ class ProveedorMaterialSearch extends ProveedorMaterial
             'id' => $this->id,
             'material_id' => $this->material_id,
             'proveedor_id' => $this->proveedor_id,
+            'precio' => $this->precio,
         ]);
 
         return $dataProvider;

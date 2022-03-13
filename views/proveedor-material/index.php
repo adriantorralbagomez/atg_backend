@@ -42,6 +42,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'proveedor_id',
             ],
             [
+                'label' => 'precio',
+                'attribute' => 'precio',
+                'value' => 'precio',
+            ],
+            [
                 'class' => ActionColumn::class,
 
             ],

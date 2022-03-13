@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property int $material_id
  * @property int $proveedor_id
+ * @property int $precio
  *
  * @property Material $material
  * @property Pedidostock[] $pedidostocks
@@ -31,10 +32,10 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['material_id', 'proveedor_id'], 'required'],
-            [['material_id', 'proveedor_id'], 'integer'],
-            [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Material::class, 'targetAttribute' => ['material_id' => 'id']],
-            [['proveedor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Proveedor::class, 'targetAttribute' => ['proveedor_id' => 'id']],
+            [['material_id', 'proveedor_id', 'precio'], 'required'],
+            [['material_id', 'proveedor_id', 'precio'], 'integer'],
+            [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Material::className(), 'targetAttribute' => ['material_id' => 'id']],
+            [['proveedor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Proveedor::className(), 'targetAttribute' => ['proveedor_id' => 'id']],
         ];
     }
 
@@ -47,6 +48,7 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
             'id' => 'ID',
             'material_id' => 'Material ID',
             'proveedor_id' => 'Proveedor ID',
+            'precio' => 'Precio',
         ];
     }
 
@@ -57,7 +59,7 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
      */
     public function getMaterial()
     {
-        return $this->hasOne(Material::class, ['id' => 'material_id']);
+        return $this->hasOne(Material::className(), ['id' => 'material_id']);
     }
 
     /**
@@ -67,7 +69,7 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
      */
     public function getPedidostocks()
     {
-        return $this->hasMany(Pedidostock::class, ['proveedor_material_id' => 'id']);
+        return $this->hasMany(Pedidostock::className(), ['proveedor_material_id' => 'id']);
     }
 
     /**
@@ -77,6 +79,6 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
      */
     public function getProveedor()
     {
-        return $this->hasOne(Proveedor::class, ['id' => 'proveedor_id']);
+        return $this->hasOne(Proveedor::className(), ['id' => 'proveedor_id']);
     }
 }
