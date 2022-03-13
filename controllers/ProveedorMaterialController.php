@@ -2,10 +2,12 @@
 
 namespace app\controllers;
 
-use app\models\ProveedorMaterial;
-use app\models\ProveedorMaterialSearch;
-use yii\web\NotFoundHttpException;
+use app\models\Material;
+use app\models\Proveedor;
 use yii\filters\VerbFilter;
+use app\models\ProveedorMaterial;
+use yii\web\NotFoundHttpException;
+use app\models\ProveedorMaterialSearch;
 
 class ProveedorMaterialController extends \yii\web\Controller
 {
@@ -124,6 +126,17 @@ class ProveedorMaterialController extends \yii\web\Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    //Obtiene Materiales
+    public function getMateriales()
+    {
+        return Material::lookup();
+    }
+    //Obtiene Proveedores
+    public function getProveedores()
+    {
+        return Proveedor::lookup();
     }
 }
 

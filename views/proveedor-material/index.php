@@ -3,9 +3,11 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
-use app\models\ProveedorMaterial;
+use app\models\Material;
+use app\models\Proveedor;
 use yii\grid\ActionColumn;
 use yii\bootstrap4\ActiveForm;
+use app\models\ProveedorMaterial;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -31,17 +33,20 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'columns' => [
             [
-                'label' => 'material_id',
+                'label' => 'Material',
                 'attribute' => 'material_id',
-                'value' => 'material_id',
+                'value' => 'material.nombre',
+                'filter' => Material::lookup(),
             ],
             [
-                'label' => 'proveedor_id',
+                'label' => 'Proveedor',
                 'attribute' => 'proveedor_id',
-                'value' => 'proveedor_id',
+                'value' => 'proveedor.nombre',
+                'filter' => Proveedor::lookup(),
+
             ],
             [
-                'label' => 'precio',
+                'label' => 'Precio',
                 'attribute' => 'precio',
                 'value' => 'precio',
             ],

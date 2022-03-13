@@ -29,7 +29,12 @@ class ProveedorMaterialSearch extends ProveedorMaterial
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-
+    //Devuelve la id de la tabla seleccionada
+    public function getIdFromName($data){
+        if($data != ""){
+            return $data->id;
+        }
+    }
     /**
      * Creates data provider instance with search query applied
      *
@@ -55,13 +60,10 @@ class ProveedorMaterialSearch extends ProveedorMaterial
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'material_id' => $this->material_id,
-            'proveedor_id' => $this->proveedor_id,
-            'precio' => $this->precio,
-        ]);
+        $query->andFilterWhere(['like', 'id', $this->id])
+                ->andFilterWhere(['like', 'material_id', $this->getIdFromName($this->material)])
+                ->andFilterWhere(['like', 'proveedor_id', $this->getIdFromName($this->proveedor)])
+                ->andFilterWhere(['like', 'precio', $this->precio]);
 
         return $dataProvider;
     }

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "proveedor_material".
@@ -34,8 +35,8 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
         return [
             [['material_id', 'proveedor_id', 'precio'], 'required'],
             [['material_id', 'proveedor_id', 'precio'], 'integer'],
-            [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Material::className(), 'targetAttribute' => ['material_id' => 'id']],
-            [['proveedor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Proveedor::className(), 'targetAttribute' => ['proveedor_id' => 'id']],
+            [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Material::class, 'targetAttribute' => ['material_id' => 'id']],
+            [['proveedor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Proveedor::class, 'targetAttribute' => ['proveedor_id' => 'id']],
         ];
     }
 
@@ -59,7 +60,7 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
      */
     public function getMaterial()
     {
-        return $this->hasOne(Material::className(), ['id' => 'material_id']);
+        return $this->hasOne(Material::class, ['id' => 'material_id']);
     }
 
     /**
@@ -69,7 +70,7 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
      */
     public function getPedidostocks()
     {
-        return $this->hasMany(Pedidostock::className(), ['proveedor_material_id' => 'id']);
+        return $this->hasMany(Pedidostock::class, ['proveedor_material_id' => 'id']);
     }
 
     /**
@@ -79,6 +80,10 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
      */
     public function getProveedor()
     {
-        return $this->hasOne(Proveedor::className(), ['id' => 'proveedor_id']);
+        return $this->hasOne(Proveedor::class, ['id' => 'proveedor_id']);
+    }
+    public static function lookup(){
+
+        return ArrayHelper::map(self::find()->asArray()->all(),'id','nombre');
     }
 }

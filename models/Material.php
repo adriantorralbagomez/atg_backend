@@ -101,4 +101,9 @@ class Material extends \yii\db\ActiveRecord
             "20000"=>"Suficiente stock"
         ];
     }
+
+    public static function lookup(){
+
+        return ArrayHelper::map(self::find()->asArray()->all(),'id','nombre');
+    }
 }

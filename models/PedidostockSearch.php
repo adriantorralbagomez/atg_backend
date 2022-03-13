@@ -30,7 +30,12 @@ class PedidostockSearch extends Pedidostock
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-
+    //Devuelve la id de la tabla seleccionada
+    public function getIdFromName($data){
+        if($data != ""){
+            return $data->id;
+        }
+    }
     /**
      * Creates data provider instance with search query applied
      *
@@ -57,15 +62,11 @@ class PedidostockSearch extends Pedidostock
         }
 
         // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'proveedor_material_id' => $this->proveedor_material_id,
-            'cantidad' => $this->cantidad,
-            'fecha' => $this->fecha,
-        ]);
-
-        $query->andFilterWhere(['like', 'estado', $this->estado]);
-
+        $query->andFilterWhere(['like', 'id', $this->id])
+                ->andFilterWhere(['like', 'proveedor_material_id', $this->getIdFromName($this->proveedor_material_id)])
+                ->andFilterWhere(['like', 'cantidad', $this->cantidad])
+                ->andFilterWhere(['like', 'fecha', $this->fecha])
+                ->andFilterWhere(['like', 'estado', $this->estado]);
         return $dataProvider;
     }
 }
