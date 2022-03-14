@@ -63,7 +63,7 @@ class PedidostockSearch extends Pedidostock
 
         // grid filtering conditions
         $query->andFilterWhere(['like', 'id', $this->id])
-                ->andFilterWhere(['like', 'proveedor_material_id', $this->getIdFromName($this->proveedor_material_id)])
+                ->andFilterWhere(['like', 'proveedor_material_id', $this->getIdFromName($this->proveedorMaterial)])
                 ->andFilterWhere(['like', 'cantidad', $this->cantidad])
                 ->andFilterWhere(['like', 'fecha', $this->fecha])
                 ->andFilterWhere(['like', 'estado', $this->estado]);
