@@ -47,8 +47,8 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'material_id' => 'Material ID',
-            'proveedor_id' => 'Proveedor ID',
+            'material_id' => 'Material',
+            'proveedor_id' => 'Proveedor',
             'precio' => 'Precio',
         ];
     }

@@ -12,9 +12,9 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'material_id')->textInput() ?>
+    <?= $form->field($model, 'material_id')->dropDownList($this->context->getMateriales(), ['prompt' => 'Selecciona Material...']) ?>
 
-    <?= $form->field($model, 'proveedor_id')->textInput() ?>
+    <?= $form->field($model, 'proveedor_id')->dropDownList($this->context->getProveedores(), ['prompt' => 'Selecciona Proveedor...']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
