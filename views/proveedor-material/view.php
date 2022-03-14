@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\ProveedorMaterial */
 
-$this->title = $model->id;
+$this->title = $model->material->nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Proveedor Materials', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Eliminar', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Desea eliminar este elemento?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -29,9 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'material_id',
-            'proveedor_id',
+            'material.nombre',
+            'proveedor.nombre',
+            'precio',
         ],
     ]) ?>
 
