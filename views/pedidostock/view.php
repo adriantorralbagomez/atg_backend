@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Pedidostock */
 
-$this->title = $model->id;
+$this->title = $model->proveedorMaterial->material->nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Pedidostocks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -29,7 +29,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'proveedor_material_id',
+            [
+                'label'=>'Material',
+                'attribute'=>'proveedorMaterial.material.nombre'
+            ],
+            [
+                'label'=>'Proveedor',
+                'attribute'=>'proveedorMaterial.proveedor.nombre'
+            ],
             'cantidad',
             'fecha',
             'estado',
