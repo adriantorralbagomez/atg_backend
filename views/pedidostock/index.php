@@ -55,10 +55,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'fecha',
                 'value' => 'fecha',
             ],
-            [
-                'label' => 'estado',
-                'attribute' => 'estado',
-                'value' => 'estado',
+            [ 
+                'attribute'=>'estado',
+                'label'=>'Estado',
+                'filter'=>Pedidostock::$estados,
+                'format'=>'raw',
+                'value'=>function($data){
+                    return $data->Estado;     
+                }
             ],
             [
                 'class' => ActionColumn::class,

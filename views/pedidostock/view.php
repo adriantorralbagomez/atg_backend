@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Pedidostock;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -39,7 +40,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'cantidad',
             'fecha',
-            'estado',
+            [ 
+                'attribute'=>'estado',
+                'label'=>'Estado',
+                'filter'=>Pedidostock::$estados,
+                'format'=>'raw',
+                'value'=>function($data){
+                    return $data->Estado;     
+                }
+            ],
         ],
     ]) ?>
 

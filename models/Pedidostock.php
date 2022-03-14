@@ -63,6 +63,22 @@ class Pedidostock extends \yii\db\ActiveRecord
     {
         return $this->hasOne(ProveedorMaterial::class, ['id' => 'proveedor_material_id']);
     }
+
+    static $estados = [
+        'P' => 'Pendiente',
+        'E' => 'Enviado',
+        'R' => 'Recogido',
+    ];
+    /**
+     * Gets query for [[Estado]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEstado()
+    {
+        return self::$estados[$this->estado];
+    }
+
     public static function lookup(){
 
         return ArrayHelper::map(self::find()->asArray()->all(),'id','nombre');
