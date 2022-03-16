@@ -2,11 +2,10 @@
 
 namespace app\controllers;
 
-use app\models\Material;
-use app\models\Proveedor;
 use app\models\Pedidostock;
 use yii\filters\VerbFilter;
 use app\models\PedidostockSearch;
+use app\models\ProveedorMaterial;
 use yii\web\NotFoundHttpException;
 
 class PedidostockController extends \yii\web\Controller
@@ -127,15 +126,10 @@ class PedidostockController extends \yii\web\Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    //Obtiene Materiales
-    public function getMateriales()
+    //Obtiene los ProveedorMateriales
+    public function getProveedorMateriales()
     {
-        return Material::lookup();
-    }
-    //Obtiene Proveedores
-    public function getProveedores()
-    {
-        return Proveedor::lookup();
+        return ProveedorMaterial::lookup();
     }
 }
 

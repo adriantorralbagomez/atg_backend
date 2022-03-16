@@ -34,11 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'columns' => [
             [
-                'label' => 'proveedor_material_id',
-                'attribute' => 'proveedor_material_id',
-                'value' => 'proveedor_material_id',
-            ],
-            [
                 'label' => 'Material',
                 'attribute' => 'proveedor_material_id',
                 'value' => 'proveedorMaterial.material.nombre',

@@ -15,8 +15,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="pedidostock-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <?php echo $_POST["material_id"]?>
     <p>
         <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Eliminar', ['delete', 'id' => $model->id], [

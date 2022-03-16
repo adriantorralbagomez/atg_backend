@@ -47,7 +47,7 @@ class Pedidostock extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'proveedor_material_id' => 'Proveedor Material ID',
+            'proveedor_material_id' => 'Material - Proveedor',
             'cantidad' => 'Cantidad',
             'fecha' => 'Fecha',
             'estado' => 'Estado',

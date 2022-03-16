@@ -12,10 +12,7 @@ use yii\widgets\ActiveForm;
 <div class="pedidostock-form">
 
     <?php $form = ActiveForm::begin(); ?>
-    <!--Arreglar esto!!!!-->
-    <?= $form->field($model, 'proveedor_material_id')->dropDownList($this->context->getMateriales(), ['prompt' => 'Selecciona Material...']) ?>
-    <!--Arreglar esto!!!!-->
-    <?= $form->field($model, 'proveedor_material_id')->dropDownList($this->context->getProveedores(), ['prompt' => 'Selecciona Proveedor...']) ?>
+    <?= $form->field($model, 'proveedor_material_id')->dropDownList($this->context->getProveedorMateriales(), ['prompt' => 'Selecciona Proveedor de material...']) ?>
 
     <?= $form->field($model, 'cantidad')->textInput() ?>
 

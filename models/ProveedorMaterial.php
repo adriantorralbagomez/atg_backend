@@ -82,8 +82,23 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Proveedor::class, ['id' => 'proveedor_id']);
     }
+
+    //Obtener Material a partir de material_id para el lookup
+    public static function obtenerMaterial($mat_id){
+        return Material::find()->where(['id'=>$mat_id])->one();
+    }
+    //Obtener Material a partir de proveedor_id para el lookup
+    public static function obtenerProveedor($prov_id){
+        return Proveedor::find()->where(['id'=>$prov_id])->one();
+    }
     public static function lookup(){
 
-        return ArrayHelper::map(self::find()->asArray()->all(),'id','nombre');
+        return ArrayHelper::map(self::find()->asArray()->all(),'id',function($data){
+            $material = ProveedorMaterial::obtenerMaterial($data["material_id"]);
+            $proveedor = ProveedorMaterial::obtenerProveedor($data["proveedor_id"]);
+            //Se devuelve una cadena con el nombre del material y el proveedor para seleccionar
+            //en las vistas de crear y atualizar de pedidostock (Pedido de Materiales)
+            return $material->nombre. ' - ' .$proveedor->nombre;
+        });
     }
 }
