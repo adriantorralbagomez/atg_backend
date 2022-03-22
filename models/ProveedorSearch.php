@@ -17,8 +17,7 @@ class ProveedorSearch extends Proveedor
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['nombre', 'descripcion'], 'safe'],
+            [['id','nombre', 'descripcion'], 'safe'],
         ];
     }
 

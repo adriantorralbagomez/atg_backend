@@ -17,8 +17,7 @@ class PedidostockSearch extends Pedidostock
     public function rules()
     {
         return [
-            [['id', 'proveedor_material_id', 'cantidad'], 'integer'],
-            [['fecha', 'estado'], 'safe'],
+            [['id', 'proveedor_material_id', 'cantidad','fecha', 'estado'], 'safe'],
         ];
     }
 

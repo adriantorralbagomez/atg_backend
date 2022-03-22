@@ -7,8 +7,6 @@ use app\models\Material;
 use app\models\Proveedor;
 use yii\grid\ActionColumn;
 use app\models\Pedidostock;
-use yii\bootstrap4\ActiveForm;
-use app\models\ProveedorMaterial;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -46,18 +44,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Proveedor::lookup(),
             ],
             [
-                'label' => 'cantidad',
+                'label' => 'Cantidad',
                 'attribute' => 'cantidad',
                 'value' => 'cantidad',
             ],
             [
-                'label' => 'fecha',
+                'label' => 'Fecha',
                 'attribute' => 'fecha',
                 'value' => 'fecha',
             ],
             [ 
-                'attribute'=>'estado',
                 'label'=>'Estado',
+                'attribute'=>'estado',
                 'filter'=>Pedidostock::$estados,
                 'format'=>'raw',
                 'value'=>function($data){

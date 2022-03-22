@@ -93,8 +93,13 @@ class Material extends \yii\db\ActiveRecord
         }
     }
 
+    const CAMPO = [0,1];
+    const EXPEDICION = [2,3,4];
+
     public static function stockActual(){
         //para el dropdown list (select) del filtrado de stock actual
+        //ARREGLAR
+        //!!!!!!
         return [
             "1000"=>"No hay suficiente stock",
             "1000000"=>"Queda poco stock",

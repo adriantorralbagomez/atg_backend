@@ -17,8 +17,7 @@ class MaterialSearch extends Material
     public function rules()
     {
         return [
-            [['id', 'tipocaja_id', 'stock_min', 'stock_act'], 'integer'],
-            [['nombre', 'descripcion'], 'safe'],
+            [['id', 'tipocaja_id', 'stock_min', 'stock_act','nombre', 'descripcion'], 'safe'],
         ];
     }
 

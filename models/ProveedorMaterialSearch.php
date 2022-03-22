@@ -17,7 +17,7 @@ class ProveedorMaterialSearch extends ProveedorMaterial
     public function rules()
     {
         return [
-            [['id', 'material_id', 'proveedor_id', 'precio'], 'integer'],
+            [['id', 'material_id', 'proveedor_id', 'precio'], 'safe'],
         ];
     }
 
