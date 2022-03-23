@@ -34,7 +34,8 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
     {
         return [
             [['material_id', 'proveedor_id', 'precio'], 'required'],
-            [['material_id', 'proveedor_id', 'precio'], 'integer'],
+            [['material_id', 'proveedor_id'], 'integer'],
+            [['precio'], 'number'],
             [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Material::class, 'targetAttribute' => ['material_id' => 'id']],
             [['proveedor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Proveedor::class, 'targetAttribute' => ['proveedor_id' => 'id']],
         ];
