@@ -245,6 +245,7 @@ class OrdenController extends Controller
         $pedstock->proveedor_material_id = $provmat->id;
         $pedstock->cantidad = $dif;
         $pedstock->estado = "P";
+        $pedstock->fecha = date('Y-m-d H:i:s');
         $pedstock->save();
     }
 
