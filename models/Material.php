@@ -93,6 +93,7 @@ class Material extends \yii\db\ActiveRecord
         }
     }
 
+    //IDS MATERIALES
     const CAMPO = [0,1];
     const EXPEDICION = [2,3,4];
 
