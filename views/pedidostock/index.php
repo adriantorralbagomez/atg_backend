@@ -1,5 +1,6 @@
 <?php
 
+use app\controllers\ProveedorMaterialController;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -7,6 +8,10 @@ use app\models\Material;
 use app\models\Proveedor;
 use yii\grid\ActionColumn;
 use app\models\Pedidostock;
+use app\models\ProveedorMaterial;
+use app\models\ProveedorMaterialSearch;
+use yii\bootstrap4\Dropdown;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -32,16 +37,14 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'columns' => [
             [
-                'label' => 'Material',
+                'label' => 'Material - Proveedor',
                 'attribute' => 'proveedor_material_id',
-                'value' => 'proveedorMaterial.material.nombre',
-                'filter' => Material::lookup(),
-            ],
-            [
-                'label' => 'Proveedor',
-                'attribute' => 'proveedor_material_id',
-                'value' => 'proveedorMaterial.proveedor.nombre',
-                'filter' => Proveedor::lookup(),
+                'value' => function ($data)
+                {
+                    $prov_mat = ProveedorMaterial::findOne($data->proveedor_material_id);
+                    return $prov_mat->material->nombre. ' - ' .$prov_mat->proveedor->nombre;
+                },
+                'filter' => ProveedorMaterial::lookup(),
             ],
             [
                 'label' => 'Cantidad',

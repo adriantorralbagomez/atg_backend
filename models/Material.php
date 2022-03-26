@@ -102,9 +102,9 @@ class Material extends \yii\db\ActiveRecord
         //ARREGLAR
         //!!!!!!
         return [
-            "1000"=>"No hay suficiente stock",
-            "1000000"=>"Queda poco stock",
-            "20000"=>"Suficiente stock"
+            "No hay suficiente stock",
+            "Queda poco stock",
+            "Suficiente stock"
         ];
     }
 
