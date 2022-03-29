@@ -89,7 +89,7 @@ class Material extends \yii\db\ActiveRecord
             return 'LightCoral';
         } else if ($data->stock_act == $data->stock_min) {
             //Hay stock de sobra
-            return 'LightGreen';
+            return 'Gold';
         }
     }
 
@@ -98,13 +98,10 @@ class Material extends \yii\db\ActiveRecord
     const EXPEDICION = [2,3,4];
 
     public static function stockActual(){
-        //para el dropdown list (select) del filtrado de stock actual
-        //ARREGLAR
-        //!!!!!!
         return [
-            "No hay suficiente stock",
-            "Queda poco stock",
-            "Suficiente stock"
+            "LightCoral"=>"No hay suficiente stock",
+            "Gold"=>"Queda poco stock",
+            "LightGreen"=>"Suficiente stock"
         ];
     }
 

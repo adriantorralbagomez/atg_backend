@@ -2,9 +2,10 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
-use yii\data\ActiveDataProvider;
 use app\models\Material;
+use yii\data\ActiveDataProvider;
 
 /**
  * MaterialSearch represents the model behind the search form of `app\models\Material`.
@@ -54,13 +55,29 @@ class MaterialSearch extends Material
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        $stock_act = $this->stock_act;
+        //ARREGLAR !!!!!
+        //CASI TERMINADO
+        switch ($stock_act) {
+            case "LightCoral":
+                //No hay suficiente stock
+                $query->where('(stock_act < stock_min) or ((stock_act > stock_min) and ((((stock_act - stock_min) * 100) / stock_act) <= 30))');
+                break;
+            case "Gold":
+                //Queda poco stock
+                $query->where('(stock_act > stock_min) or (stock_act = stock_min) and ((((stock_act - stock_min) * 100) / stock_act) <= 60)');
+                break;
+            case "LightGreen":
+                //Suficiente stock
+                $query->where('(stock_act > stock_min) and ((((stock_act - stock_min) * 100) / stock_act) <= 80)');
+                break;
+            
+        }
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'tipocaja_id' => $this->tipocaja_id,
             'stock_min' => $this->stock_min,
-            'stock_act' => $this->stock_act,
         ]);
 
         $query->andFilterWhere(['like', 'nombre', $this->nombre])

@@ -27,21 +27,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::label("Suficiente stock", $for = null, ['style' => 'background-color: lightgreen; padding:1%; border-radius:12px; color:white;']) ?>
         </span>
     </p>
-
-    <?php 
-        // echo $form->field($searchModel, 'stock_act')->dropDownList(Material::stockActual(),
-        // ['prompt' => 'Selecciona stock actual...','id'=>'selvar']); 
-
-        // $url = yii\helpers\Url::to(['material/index']);
-        // $this->registerJs("$('#selvar').on('change', function() {
-        // window.location.href='$url&stock_act='+$(this).val();
-        // });",
-        // \yii\web\View::POS_READY,
-        // 'my-button-handler'
-        // );
-
-    ?>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -75,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $color = Material::comprobarStock($data);
                     return ['style' => 'background-color:' . $color . '; color:white;'];
                 },
-                
+                'filter' => Material::stockActual(),
             ],
             [
                 'label' => 'Tipo de caja',
