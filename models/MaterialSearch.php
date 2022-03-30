@@ -52,11 +52,9 @@ class MaterialSearch extends Material
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
         $stock_act = $this->stock_act;
-        //ARREGLAR !!!!!
         //CASI TERMINADO
         switch ($stock_act) {
             case "LightCoral":
@@ -65,11 +63,11 @@ class MaterialSearch extends Material
                 break;
             case "Gold":
                 //Queda poco stock
-                $query->where('(stock_act > stock_min) or (stock_act = stock_min) and ((((stock_act - stock_min) * 100) / stock_act) <= 60)');
+                $query->where('(stock_act = stock_min) or  (stock_act > stock_min) and ((((stock_act - stock_min) * 100) / stock_act) <= 60)');
                 break;
             case "LightGreen":
                 //Suficiente stock
-                $query->where('(stock_act > stock_min) and ((((stock_act - stock_min) * 100) / stock_act) <= 80)');
+                $query->where('(stock_act > stock_min) and ((((stock_act - stock_min) * 100) / stock_act) > 80)');
                 break;
             
         }
