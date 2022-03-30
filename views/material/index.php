@@ -12,7 +12,7 @@ use yii\bootstrap4\ActiveForm;
 
 checkLogged();
 
-$this->title = 'Stock de materiales';
+$this->title = 'Materiales';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="material-index">
@@ -22,9 +22,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Crear Material', ['create'], ['class' => 'btn btn-success']) ?>
         <!--Leyenda stock-->
         <span>
-            <?= Html::label("No hay suficiente stock", $for = null, ['style' => 'background-color: lightcoral; padding:1%; border-radius:12px; color:white;']) ?>
-            <?= Html::label("Queda poco stock", $for = null, ['style' => 'background-color: gold; padding:1%; border-radius:12px; color:white;']) ?>
-            <?= Html::label("Suficiente stock", $for = null, ['style' => 'background-color: lightgreen; padding:1%; border-radius:12px; color:white;']) ?>
+            <?= Html::label("No hay suficiente stock", $for = null, ['style' => 'background-color: lightcoral; padding:0.5%; border-radius:12px; color:white;']) ?>
+            <?= Html::label("Queda poco stock", $for = null, ['style' => 'background-color: gold; padding:0.5%; border-radius:12px; color:white;']) ?>
+            <?= Html::label("Suficiente stock", $for = null, ['style' => 'background-color: lightgreen; padding:0.5%; border-radius:12px; color:white;']) ?>
         </span>
     </p>
     <?= GridView::widget([
