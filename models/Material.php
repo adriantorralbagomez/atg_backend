@@ -80,7 +80,7 @@ class Material extends \yii\db\ActiveRecord
             } else if ($porcentaje <= 60) {
                 //Stock "normal"
                 return 'Gold';
-            } else if ($porcentaje > 80) {
+            } else if ($porcentaje > 60) {
                 //Hay stock de sobra
                 return 'LightGreen';
             }

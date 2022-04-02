@@ -67,7 +67,7 @@ class MaterialSearch extends Material
                 break;
             case "LightGreen":
                 //Suficiente stock
-                $query->where('(stock_act > stock_min) and ((((stock_act - stock_min) * 100) / stock_act) > 80)');
+                $query->where('(stock_act > stock_min) and ((((stock_act - stock_min) * 100) / stock_act) > 60)');
                 break;
             
         }
