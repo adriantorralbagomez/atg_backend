@@ -6,6 +6,8 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\ProveedorMaterial */
 /* @var $form yii\widgets\ActiveForm */
+
+checkGestion();
 ?>
 
 <div class="proveedor-material-form">

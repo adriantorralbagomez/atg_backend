@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Pedidoinfo */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Actualizar Pedidoinfo: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Pedidoinfos', 'url' => ['index']];

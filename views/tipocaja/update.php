@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Tipocaja */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Actualizar Tipo de caja: ' . $model->nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Tipocajas', 'url' => ['index']];

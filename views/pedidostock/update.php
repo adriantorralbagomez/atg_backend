@@ -5,6 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Pedidostock */
 
+checkGestion();
+
 $this->title = 'Actualizar Pedido de material: ' . $model->proveedorMaterial->material->nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Pedidostocks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];

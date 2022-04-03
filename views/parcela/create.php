@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Parcela */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Crear Parcela';
 $this->params['breadcrumbs'][] = ['label' => 'Parcelas', 'url' => ['index']];

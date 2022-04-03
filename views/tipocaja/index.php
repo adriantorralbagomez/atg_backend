@@ -9,7 +9,7 @@ use yii\grid\ActionColumn;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Tipos de caja';
 $this->params['breadcrumbs'][] = $this->title;

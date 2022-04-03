@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\OrdenPedidoinfo */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Crear Orden Pedidoinfo';
 $this->params['breadcrumbs'][] = ['label' => 'Orden Pedidoinfos', 'url' => ['index']];

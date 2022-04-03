@@ -51,8 +51,10 @@ class LoginForm extends Model
             if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, 'Usuario o contraseña incorrectos.');
             }elseif($user->rol != "A"){
-                //Verifica que solo pueda iniciar sesión un administrador
-                $this->addError($attribute, 'Tu usuario no tiene suficientes permisos');
+                if($user->rol != "G"){
+                    //Verifica que solo pueda iniciar sesión un administrador o gestión
+                    $this->addError($attribute, 'Tu usuario no tiene suficientes permisos');
+                }
             }
         }
     }

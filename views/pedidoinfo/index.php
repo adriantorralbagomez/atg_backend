@@ -14,7 +14,7 @@ use yii\grid\CheckboxColumn;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Información del pedido';
 $this->params['breadcrumbs'][] = $this->title;

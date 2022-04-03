@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Sector */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Crear Sector';
 $this->params['breadcrumbs'][] = ['label' => 'Sectores', 'url' => ['index']];

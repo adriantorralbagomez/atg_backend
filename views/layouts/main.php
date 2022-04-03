@@ -11,9 +11,15 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
 
 //Mostrar menú lateral si se ha iniciado sesión
 if (!Yii::$app->user->isGuest) {
-    $menu = [
-        "items" => require '_menuA.php'
-    ];
+    if(Yii::$app->user->identity->rol == "A"){
+        $menu = [
+            "items" => require '_menuA.php'
+        ];
+    }else if(Yii::$app->user->identity->rol == "G"){
+        $menu = [
+            "items" => require '_menuG.php'
+        ];
+    }
 } else {
     $menu = [];
 }

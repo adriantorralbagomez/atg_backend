@@ -5,6 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\ProveedorMaterial */
 
+checkGestion();
+
 $this->title = 'Crear Proveedor Material';
 $this->params['breadcrumbs'][] = ['label' => 'Proveedor Materials', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

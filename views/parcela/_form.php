@@ -8,7 +8,7 @@ use app\models\Parcela;
 /* @var $model app\models\Parcela */
 /* @var $form yii\widgets\ActiveForm */
 
-checkLogged();
+checkAdmin();
 
 ?>
 

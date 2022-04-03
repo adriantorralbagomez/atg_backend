@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Caja */
 
-checkLogged();
+checkAdmin();
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Cajas', 'url' => ['index']];

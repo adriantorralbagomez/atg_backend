@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Finca */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Crear Finca';
 $this->params['breadcrumbs'][] = ['label' => 'Fincas', 'url' => ['index']];

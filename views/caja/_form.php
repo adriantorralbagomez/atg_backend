@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Caja */
 /* @var $form yii\widgets\ActiveForm */
 
-checkLogged();
+checkAdmin();
 
 ?>
 

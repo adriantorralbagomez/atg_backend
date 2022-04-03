@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Variedad */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Actualizar Variedad: ' . $model->nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Variedades', 'url' => ['index']];

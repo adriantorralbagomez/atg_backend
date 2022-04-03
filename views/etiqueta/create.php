@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Etiqueta */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Crear Etiqueta';
 $this->params['breadcrumbs'][] = ['label' => 'Etiquetas', 'url' => ['index']];

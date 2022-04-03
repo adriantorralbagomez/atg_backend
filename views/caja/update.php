@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Caja */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Actualizar Caja: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Cajas', 'url' => ['index']];

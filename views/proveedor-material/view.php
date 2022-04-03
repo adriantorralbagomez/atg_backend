@@ -6,6 +6,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\ProveedorMaterial */
 
+checkGestion();
+
 $this->title = $model->material->nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Proveedor Materials', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

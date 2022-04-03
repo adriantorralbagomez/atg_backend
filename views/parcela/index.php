@@ -10,7 +10,7 @@ use yii\grid\ActionColumn;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Parcelas';
 $this->params['breadcrumbs'][] = $this->title;

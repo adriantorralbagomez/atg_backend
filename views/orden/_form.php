@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Orden */
 /* @var $form yii\widgets\ActiveForm */
 
-checkLogged();
+checkAdmin();
 /*
 <?= $form->field($model, 'variedad_id')->dropDownList($this->context->getVariedades(), ['prompt' => 'Selecciona variedad...']) ?>
 

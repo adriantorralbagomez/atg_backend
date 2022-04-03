@@ -7,6 +7,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Pedidostock */
 
+checkGestion();
+
 $this->title = $model->proveedorMaterial->material->nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Pedidostocks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

@@ -10,7 +10,7 @@ use yii\bootstrap4\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-checkLogged();
+checkGestion();
 
 $this->title = 'Materiales';
 $this->params['breadcrumbs'][] = $this->title;

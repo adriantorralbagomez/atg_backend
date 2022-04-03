@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuario */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Actualizar Usuario: ' . $model->nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Usuarios', 'url' => ['index']];

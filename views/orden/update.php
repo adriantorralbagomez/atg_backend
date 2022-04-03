@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Orden */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Actualizar Órden: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Órdenes', 'url' => ['index']];

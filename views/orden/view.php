@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Orden */
 
-checkLogged();
+checkAdmin();
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Órdenes', 'url' => ['index']];

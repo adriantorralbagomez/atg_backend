@@ -7,6 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Pedidostock */
 /* @var $form yii\widgets\ActiveForm */
+checkGestion();
 ?>
 
 <div class="pedidostock-form">

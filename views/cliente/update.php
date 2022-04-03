@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Cliente */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Actualizar Cliente: ' . $model->nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Clientes', 'url' => ['index']];

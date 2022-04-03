@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Cliente */
 
-checkLogged();
+checkAdmin();
 
 $this->title = $model->nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Clientes', 'url' => ['index']];

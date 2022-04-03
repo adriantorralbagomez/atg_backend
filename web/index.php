@@ -26,11 +26,28 @@ function isAdmin(){
         return false;
     }
 }
+//Comprueba si el usuario es gestión
+function isGestion(){
+    if(!Yii::$app->user->isGuest && Yii::$app->user->identity->rol == "G"){
+        return true;
+    }else{
+        return false;
+    }
+}
 
 //Si el usuario no es administrador, restringe el
 //acceso y devuelve al login
-function checkLogged(){
+function checkAdmin(){
     if(!isAdmin()){
+        $url = Url::home();
+        header("Location: $url?r=site%2Flogin");
+        exit;
+    }
+}
+//Si el usuario no es gestión, restringe el
+//acceso y devuelve al login
+function checkGestion(){
+    if(!isGestion()){
         $url = Url::home();
         header("Location: $url?r=site%2Flogin");
         exit;

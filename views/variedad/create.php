@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Variedad */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Crear Variedad';
 $this->params['breadcrumbs'][] = ['label' => 'Variedades', 'url' => ['index']];

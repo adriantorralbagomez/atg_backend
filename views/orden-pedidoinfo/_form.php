@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\OrdenPedidoinfo */
 /* @var $form yii\widgets\ActiveForm */
 
-checkLogged();
+checkAdmin();
 
 ?>
 

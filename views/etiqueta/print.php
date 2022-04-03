@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use app\models\Tipocaja;
 use yii\widgets\ActiveForm;
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Imprimir Etiquetas';
 $this->params['breadcrumbs'][] = ['label' => 'Etiquetas', 'url' => ['index']];

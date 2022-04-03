@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuario */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Crear Usuario';
 $this->params['breadcrumbs'][] = ['label' => 'Usuarios', 'url' => ['index']];

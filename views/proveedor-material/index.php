@@ -12,7 +12,7 @@ use app\models\ProveedorMaterial;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-checkLogged();
+checkGestion();
 
 $this->title = 'Proveedor - materiales';
 $this->params['breadcrumbs'][] = $this->title;

@@ -17,7 +17,7 @@ use kartik\datecontrol\DateControl;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Crear orden';
 $this->params['breadcrumbs'][] = $this->title;

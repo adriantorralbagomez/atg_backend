@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Caja */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Crear Caja';
 $this->params['breadcrumbs'][] = ['label' => 'Cajas', 'url' => ['index']];

@@ -9,7 +9,7 @@ use app\models\OrdenPedidoinfo;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-checkLogged();
+checkAdmin();
 
 $this->title = 'Orden Pedidoinfos';
 $this->params['breadcrumbs'][] = $this->title;
