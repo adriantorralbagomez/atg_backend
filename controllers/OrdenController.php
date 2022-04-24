@@ -15,6 +15,7 @@ use app\models\Pedidoinfo;
 use app\models\OrdenSearch;
 use yii\filters\VerbFilter;
 use app\models\OrdenPedidoinfo;
+use app\models\OrdenProvmat;
 use app\models\PedidoinfoSearch;
 use app\models\Pedidostock;
 use app\models\ProveedorMaterial;
@@ -222,6 +223,13 @@ class OrdenController extends Controller
                     $dif = $material["stock_min"] * 40 / 100;
                     $dif = $dif - $material["stock_act"];
                     $this->pedirpedido($material, $dif);
+                }
+            }
+            //Calcular coste ordenprovmat
+            $ordenprovmats = OrdenProvmat::find()->all();
+            foreach ($ordenprovmats as $ordenprovmat) {
+                if($id == $ordenprovmat["orden_id"]){
+                    //CONTINUAR AQUÍ !!!!
                 }
             }
             //Transacción correcta
