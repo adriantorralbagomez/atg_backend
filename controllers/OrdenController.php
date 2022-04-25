@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Caja;
 use Yii;
 use app\models\Finca;
 use app\models\Material;
@@ -203,7 +204,25 @@ class OrdenController extends Controller
                     //Materiales: caja final, cajas y palets expedición
                     $mats = Material::find()->where(["id" => Material::EXPEDICION])->asArray()->all();
                     break;
+                case 'E':
+                    //CALCULAR COSTE
+                    //-----------------
+                    $costetotal = 0;
+                    $coste_cajas = 0;
+                    $cajas = Caja::find()->where(["orden_id"=>$model->id])->all();
+                    //Calcular coste cajas
+                    foreach ($cajas as $caja) {
+                        $coste_cajas .= $caja->proveedorMaterial->precio;
+                    }
+                    //FALTA CALCULAR EL COSTE DE LA CAJA DE 15 KG (CAJA DE EXPEDICIÓN)
+                    //CALCULAR COSTE PALETS
+
+                    //!!Sumar el resto de costes
+                    $costetotal = $coste_cajas;
+                    $model->coste = $costetotal;
+                    break;
             }
+            
             //Comprobar stock
             foreach ($mats as $material) {
                 if (($material["stock_act"] > $material["stock_min"]) || ($material["stock_act"] > $material["stock_min"])) {
@@ -225,13 +244,7 @@ class OrdenController extends Controller
                     $this->pedirpedido($material, $dif);
                 }
             }
-            //Calcular coste ordenprovmat
-            $ordenprovmats = OrdenProvmat::find()->all();
-            foreach ($ordenprovmats as $ordenprovmat) {
-                if($id == $ordenprovmat["orden_id"]){
-                    //CONTINUAR AQUÍ !!!!
-                }
-            }
+
             //Transacción correcta
             $trans->commit();
             if ($model->save()) {
