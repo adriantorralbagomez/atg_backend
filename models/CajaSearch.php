@@ -18,7 +18,7 @@ class CajaSearch extends Caja
     public function rules()
     {
         return [
-            [['orden_id','sector_id','tipocaja_id','etiqueta_id','estado'], 'safe'],
+            [['orden_id','sector_id','tipocaja_id', 'proveedor_material_id','etiqueta_id','estado'], 'safe'],
         ];
     }
 
@@ -69,6 +69,7 @@ class CajaSearch extends Caja
         $query->andFilterWhere(['like', 'orden_id', $this->orden])
                 ->andFilterWhere(['like', 'sector_id', $this->getIdFromName($this->sector)])
                 ->andFilterWhere(['like', 'tipocaja_id', $this->getIdFromName($this->tipocaja)])
+                ->andFilterWhere(['like', 'proveedor_material_id', $this->getIdFromName($this->proveedorMaterial)])
                 ->andFilterWhere(['like', 'estado', $this->estado])
                 ->andFilterWhere(['like', 'etiqueta_id', $this->etiqueta]);
 

@@ -21,6 +21,8 @@ checkAdmin();
     <?= $form->field($model, 'sector_id')->dropDownList($this->context->getSectores(), ['prompt' => 'Selecciona finca...']) ?>
 
     <?= $form->field($model, 'tipocaja_id')->dropDownList($this->context->getTiposCaja(),['prompt' => 'Selecciona tipo de caja...']) ?>
+    
+    <?= $form->field($model, 'proveedor_material_id')->dropDownList($this->context->getProveedorMateriales(), ['prompt' => 'Selecciona Proveedor de material...']) ?>
 
     <?= $form->field($model, 'etiqueta_id')->textInput() ?>
 

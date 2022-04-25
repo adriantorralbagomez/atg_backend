@@ -36,7 +36,7 @@ class Caja extends \yii\db\ActiveRecord
     {
         return [
             [['orden_id', 'tipocaja_id', 'etiqueta_id'], 'required'],
-            [['orden_id', 'sector_id', 'tipocaja_id', 'etiqueta_id'], 'integer'],
+            [['orden_id', 'sector_id', 'tipocaja_id', 'proveedor_material_id', 'etiqueta_id'], 'integer'],
             [['estado'], 'string'],
             [['sector_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sector::class, 'targetAttribute' => ['sector_id' => 'id']],
             [['tipocaja_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tipocaja::class, 'targetAttribute' => ['tipocaja_id' => 'id']],
@@ -55,6 +55,7 @@ class Caja extends \yii\db\ActiveRecord
             'orden_id' => 'Orden ID',
             'sector_id' => 'Sector ID',
             'tipocaja_id' => 'Tipocaja ID',
+            'proveedor_material_id' => 'Proveedor - Material',
             'etiqueta_id' => 'Etiqueta ID',
             'estado' => 'Estado',
         ];
@@ -99,6 +100,17 @@ class Caja extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Tipocaja::class, ['id' => 'tipocaja_id']);
     }
+
+    /**
+     * Gets query for [[ProveedorMaterial]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProveedorMaterial()
+    {
+        return $this->hasOne(ProveedorMaterial::class, ['id' => 'proveedor_material_id']);
+    }
+
     static $estados = [
         'P' => 'Pendiente',
         'T' => 'Terminada',

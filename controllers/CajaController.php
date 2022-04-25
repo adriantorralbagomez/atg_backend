@@ -8,6 +8,7 @@ use app\models\Sector;
 use yii\web\Controller;
 use app\models\Tipocaja;
 use app\models\CajaSearch;
+use app\models\ProveedorMaterial;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
@@ -132,6 +133,10 @@ class CajaController extends Controller
 
     public function getSectores(){
         return Sector::lookup();
+    }
+
+    public function getProveedorMateriales(){
+        return ProveedorMaterial::lookup();
     }
 
     /**

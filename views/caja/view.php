@@ -45,6 +45,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'tipocaja.nombre',
             ],
             [
+                'label'=>'Material',
+                'attribute'=>'proveedorMaterial.material.nombre'
+            ],
+            [
+                'label'=>'Proveedor',
+                'attribute'=>'proveedorMaterial.proveedor.nombre'
+            ],
+            [
                 'label' => 'Etiqueta',
                 'attribute' => 'etiqueta.nombre',
             ],

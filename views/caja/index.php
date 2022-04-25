@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\grid\ActionColumn;
+use app\models\ProveedorMaterial;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -51,11 +52,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => $this->context->getTiposCaja(),
                 'value' => 'tipocaja.nombre',
             ],
-            // [
-            //     'label' => 'Etiqueta',
-            //     'attribute' => 'etiqueta_id',
-            //     'value'=>'etiqueta.nombre'
-            // ],
+            [
+                'label' => 'Material - Proveedor',
+                'attribute' => 'proveedor_material_id',
+                'value' => function ($data)
+                {
+                    $prov_mat = ProveedorMaterial::findOne($data->proveedor_material_id);
+                    if($prov_mat == null || $prov_mat == null){
+                        return '(No seleccionado)';
+                    }else {
+                        return $prov_mat->material->nombre. ' - ' .$prov_mat->proveedor->nombre;
+                    }
+                },
+                'filter' => ProveedorMaterial::lookup(),
+            ],
             [ 
                 'attribute'=>'estado',
                 'label'=>'Estado',
