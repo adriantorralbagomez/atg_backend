@@ -42,6 +42,7 @@ class Orden extends ActiveRecord
             [['lote', 'variedad_id', 'finca_id', 'parcela_id', 'fecha', 'cantidad'], 'required'],
             [['variedad_id', 'finca_id', 'parcela_id', 'cantidad'], 'integer'],
             [['fecha'], 'safe'],
+            [['coste'], 'number'],
             [['estado'], 'string'],
             [['lote'], 'string', 'max' => 20],
             [['variedad_id'], 'exist', 'skipOnError' => true, 'targetClass' => Variedad::class, 'targetAttribute' => ['variedad_id' => 'id']],
@@ -63,6 +64,7 @@ class Orden extends ActiveRecord
             'fecha' => 'Fecha',
             'cantidad' => 'Cantidad',
             'estado' => 'Estado',
+            'coste' => 'Coste',
         ];
     }
 

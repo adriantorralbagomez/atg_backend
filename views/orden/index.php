@@ -62,6 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $data->Estado;     
                 }
             ],
+            'coste',
             [
                 'format'=>'raw',
                 'value'=>function($data){

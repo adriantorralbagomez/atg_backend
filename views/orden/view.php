@@ -58,6 +58,7 @@ YiiAsset::register($this);
                     return $data->Estado;     
                 }
             ],
+            'coste'
         ],
     ]) ?>
 

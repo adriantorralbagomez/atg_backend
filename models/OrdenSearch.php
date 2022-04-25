@@ -18,7 +18,7 @@ class OrdenSearch extends Orden
     public function rules()
     {
         return [
-            [['lote','variedad_id','finca_id','parcela_id','fecha','cantidad','estado'], 'safe'],
+            [['lote','variedad_id','finca_id','parcela_id','fecha','cantidad','estado', 'coste'], 'safe'],
         ];
     }
 
