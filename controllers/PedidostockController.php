@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Pedidostock;
 use yii\filters\VerbFilter;
 use app\models\PedidostockSearch;
@@ -75,8 +76,23 @@ class PedidostockController extends \yii\web\Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            //Inicio de transacción
+            $trans = Yii::$app->db->beginTransaction();
+            //Si el estado del pedido cambia a Recogido
+            if($model->estado == 'R'){
+                //Sumar el stock del pedido al stock del proveedor-material
+                $prov_mat = ProveedorMaterial::find()->where(["id"=>$model->proveedor_material_id])->one();
+                $prov_mat["stock_act"] = $prov_mat["stock_act"] + $model->cantidad;
+                //Actualizar stock actual del proveedor-material
+                $prov_mat->save();
+            }
+
+            //Transacción correcta
+            $trans->commit();
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [

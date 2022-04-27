@@ -65,14 +65,15 @@ class Material extends \yii\db\ActiveRecord
         return $this->hasOne(Tipocaja::class, ['id' => 'tipocaja_id']);
     }
 
-    //IDS MATERIALES
-    const CAMPO = [0,1];
-    const EXPEDICION = [2,3,4];
-
     public static function lookup(){
 
         return ArrayHelper::map(self::find()->asArray()->all(),'id','nombre');
     }
+
+    //IDS MATERIALES
+    const CAMPO = [0,1];
+    const EXPEDICION = [2,3,4];
+
     public static function filtrar_stock_min(){
         //Para el search en el index de proveedormaterial
         return array_unique(ArrayHelper::map(self::find()->asArray()->all(),'id','stock_min'));

@@ -180,6 +180,50 @@ class OrdenController extends Controller
         ]);
     }
 
+    public function calc_stock_act($provmats){
+        $stock_act = 0;
+        foreach ($provmats as $pm) {
+            $stock_act = $stock_act + $pm["stock_act"];
+        }
+        return $stock_act;
+    }
+
+    public function comprobar_stock($provmats, $total_stock_act, $stock_min)
+    {//Comprobar stock
+        if($total_stock_act < $stock_min){
+            foreach ($provmats as $prmt) {
+                if (($prmt["stock_act"] > $stock_min) || ($prmt["stock_act"] > $stock_min)) {
+                    //Si el stock actual supera el mínimo
+                    //Calcular porcentaje del stock mínimo sobre el stock actual
+                    $dif = $prmt["stock_act"] - $stock_min;
+                    $porcentaje = ((float)$dif * 100) / $prmt["stock_act"];
+                    $porcentaje = round($porcentaje, 0);  //Eliminar los decimales
+    
+                    if ($porcentaje <= 30) {
+                        //Cerca del mínimo de stock
+                        $this->pedirpedido($prmt, $dif*2);
+                    }
+                } else if (($prmt["stock_act"] < $stock_min) || ($prmt["stock_act"] < $stock_min)) {
+                    //Stock por debajo de mínimos
+                    //Cantidad de cajas a pedir
+                    $restante = $stock_min - $total_stock_act;
+                    $extra = $stock_min * 40 / 100;
+                    //$cantidad = $extra + $restante;
+                    //REVISAR
+                    //!!!!!!!!!!!!!!
+                    //!!!!!!!!!!!!!!
+                    //!!!!!!!!!!!!!!
+                    //!!!!!!!!!!!!!!
+                    //!!!!!!!!!!!!!!
+                    //!!!!!!!!!!!!!!
+                    //!!!!!!!!!!!!!!
+                    //!!!!!!!!!!!!!!
+                    $this->pedirpedido($prmt, $extra);
+                }
+            }
+        }
+    }
+
     /**
      * Updates an existing Orden model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -194,15 +238,33 @@ class OrdenController extends Controller
             //Inicio de transacción
             $trans = Yii::$app->db->beginTransaction();
             $mats = [];
+            $stock_min = 0;
+            $total_stock_act = 0;
             //comprobar cajas
             switch ($model->estado) {
                 case 'T':
                     //Materiales: cajas y palets campo
                     $mats = Material::find()->where(["id" => Material::CAMPO])->asArray()->all();
+                    foreach ($mats as $mat) {
+                        //Lista de proveedores de material 
+                        $provmats = ProveedorMaterial::find()->where(["material_id" => $mat["id"]])->asArray()->all();
+                        //Suma de todos los stock actual (de todos sus proveedores) del material
+                        $total_stock_act = $this->calc_stock_act($provmats);
+                        $stock_min = $mat["stock_min"];
+                        $this->comprobar_stock($provmats, $total_stock_act, $stock_min);
+                    }
                     break;
                 case 'L':
                     //Materiales: caja final, cajas y palets expedición
                     $mats = Material::find()->where(["id" => Material::EXPEDICION])->asArray()->all();
+                    foreach ($mats as $mat) {
+                        //Lista de proveedores de material 
+                        $provmats = ProveedorMaterial::find()->where(["material_id" => $mat["id"]])->asArray()->all();
+                        //Suma de todos los stock actual (de todos sus proveedores) del material
+                        $total_stock_act = $this->calc_stock_act($provmats);
+                        $stock_min = $mat["stock_min"];
+                        $this->comprobar_stock($provmats, $total_stock_act, $stock_min);
+                    }
                     break;
                 case 'E':
                     //CALCULAR COSTE
@@ -212,7 +274,7 @@ class OrdenController extends Controller
                     $cajas = Caja::find()->where(["orden_id"=>$model->id])->all();
                     //Calcular coste cajas
                     foreach ($cajas as $caja) {
-                        $coste_cajas .= $caja->proveedorMaterial->precio;
+                        $coste_cajas .= $caja["proveedorMaterial"]["precio"];
                     }
                     //FALTA CALCULAR EL COSTE DE LA CAJA DE 15 KG (CAJA DE EXPEDICIÓN)
                     $ncajexp = count($cajas) / 30;
@@ -223,28 +285,6 @@ class OrdenController extends Controller
                     $costetotal = $coste_cajas;
                     $model->coste = $costetotal;
                     break;
-            }
-            
-            //Comprobar stock
-            foreach ($mats as $material) {
-                if (($material["stock_act"] > $material["stock_min"]) || ($material["stock_act"] > $material["stock_min"])) {
-                    //Si el stock actual supera el mínimo
-                    //Calcular porcentaje del stock mínimo sobre el stock actual
-                    $dif = $material["stock_act"] - $material["stock_min"];
-                    $porcentaje = ((float)$dif * 100) / $material["stock_act"];
-                    $porcentaje = round($porcentaje, 0);  //Eliminar los decimales
-
-                    if ($porcentaje <= 30) {
-                        //Cerca del mínimo de stock
-                        $this->pedirpedido($material, $dif*2);
-                    }
-                } else if (($material["stock_act"] < $material["stock_min"]) || ($material["stock_act"] < $material["stock_min"])) {
-                    //Stock por debajo de mínimos
-                    //Cantidad de cajas a pedir
-                    $dif = $material["stock_min"] * 40 / 100;
-                    $dif = $dif - $material["stock_act"];
-                    $this->pedirpedido($material, $dif);
-                }
             }
 
             //Transacción correcta
