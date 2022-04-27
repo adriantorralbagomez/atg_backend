@@ -20,12 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <p>
         <?= Html::a('Crear Material', ['create'], ['class' => 'btn btn-success']) ?>
-        <!--Leyenda stock-->
-        <span>
-            <?= Html::label("No hay suficiente stock", $for = null, ['style' => 'background-color: lightcoral; padding:0.5%; border-radius:12px; color:white;']) ?>
-            <?= Html::label("Queda poco stock", $for = null, ['style' => 'background-color: gold; padding:0.5%; border-radius:12px; color:white;']) ?>
-            <?= Html::label("Suficiente stock", $for = null, ['style' => 'background-color: lightgreen; padding:0.5%; border-radius:12px; color:white;']) ?>
-        </span>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -44,23 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Descripción',
                 'attribute' => 'descripcion',
                 'value' => 'descripcion',
-            ],
-            [
-                'label' => 'Stock Mínimo',
-                'attribute' => 'stock_min',
-                'value' => 'stock_min',
-            ],
-            [
-                'label' => 'Stock Actual',
-                'attribute' => 'stock_act',
-                'value' => 'stock_act',
-                'contentOptions' =>  function ($data) {
-                    //Se obtiene el color de fondo en base al stock mínimo y
-                    //stock actual
-                    $color = Material::comprobarStock($data);
-                    return ['style' => 'background-color:' . $color . '; color:white;'];
-                },
-                'filter' => Material::stockActual(),
             ],
             [
                 'label' => 'Tipo de caja',

@@ -215,6 +215,8 @@ class OrdenController extends Controller
                         $coste_cajas .= $caja->proveedorMaterial->precio;
                     }
                     //FALTA CALCULAR EL COSTE DE LA CAJA DE 15 KG (CAJA DE EXPEDICIÓN)
+                    $ncajexp = count($cajas) / 30;
+                    //!!!
                     //CALCULAR COSTE PALETS
 
                     //!!Sumar el resto de costes

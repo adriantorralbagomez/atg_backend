@@ -18,6 +18,10 @@ checkGestion();
 
     <?= $form->field($model, 'proveedor_id')->dropDownList($this->context->getProveedores(), ['prompt' => 'Selecciona Proveedor...']) ?>
     
+    <?= $form->field($model, 'stock_min')->textInput() ?>
+
+    <?= $form->field($model, 'stock_act')->textInput() ?>
+
     <?= $form->field($model, 'precio')->textInput() ?>
 
     <div class="form-group">

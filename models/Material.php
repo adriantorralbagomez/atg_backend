@@ -33,9 +33,9 @@ class Material extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'stock_min', 'stock_act'], 'required'],
+            [['nombre'], 'required'],
             [['descripcion'], 'string'],
-            [['tipocaja_id', 'stock_min', 'stock_act'], 'integer'],
+            [['tipocaja_id'], 'integer'],
             [['nombre'], 'string', 'max' => 20],
             [['tipocaja_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tipocaja::class, 'targetAttribute' => ['tipocaja_id' => 'id']],
         ];
@@ -51,8 +51,6 @@ class Material extends \yii\db\ActiveRecord
             'nombre' => 'Nombre',
             'descripcion' => 'Descripcion',
             'tipocaja_id' => 'Tipo de caja',
-            'stock_min' => 'Stock Min',
-            'stock_act' => 'Stock Act',
         ];
     }
 
@@ -66,44 +64,9 @@ class Material extends \yii\db\ActiveRecord
         return $this->hasOne(Tipocaja::class, ['id' => 'tipocaja_id']);
     }
 
-    public static function comprobarStock($data){
-        if ($data->stock_act > $data->stock_min) {
-            //Si el stock actual supera el mínimo
-            //Calcular porcentaje del stock mínimo sobre el stock actual
-            $dif = $data->stock_act - $data->stock_min;
-            $porcentaje = ((float)$dif * 100) / $data->stock_act;
-            $porcentaje = round($porcentaje, 0);  //Eliminar los decimales
-
-            if ($porcentaje <= 30) {
-                //Cerca del mínimo de stock
-                return 'LightCoral';
-            } else if ($porcentaje <= 60) {
-                //Stock "normal"
-                return 'Gold';
-            } else if ($porcentaje > 60) {
-                //Hay stock de sobra
-                return 'LightGreen';
-            }
-        } else if($data->stock_act < $data->stock_min) {
-            //Stock por debajo de mínimos
-            return 'LightCoral';
-        } else if ($data->stock_act == $data->stock_min) {
-            //Hay stock de sobra
-            return 'Gold';
-        }
-    }
-
     //IDS MATERIALES
     const CAMPO = [0,1];
     const EXPEDICION = [2,3,4];
-
-    public static function stockActual(){
-        return [
-            "LightCoral"=>"No hay suficiente stock",
-            "Gold"=>"Queda poco stock",
-            "LightGreen"=>"Suficiente stock"
-        ];
-    }
 
     public static function lookup(){
 

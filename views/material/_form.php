@@ -19,10 +19,6 @@ checkGestion();
 
     <?= $form->field($model, 'tipocaja_id')->dropDownList($this->context->getTiposCaja(),['prompt' => 'Selecciona tipo de caja...']) ?>
 
-    <?= $form->field($model, 'stock_min')->textInput() ?>
-
-    <?= $form->field($model, 'stock_act')->textInput() ?>
-
     <div class="form-group">
         <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
     </div>

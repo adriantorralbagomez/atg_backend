@@ -34,7 +34,7 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
     {
         return [
             [['material_id', 'proveedor_id', 'precio'], 'required'],
-            [['material_id', 'proveedor_id'], 'integer'],
+            [['material_id', 'proveedor_id', 'stock_min', 'stock_act'], 'integer'],
             [['precio'], 'number'],
             [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Material::class, 'targetAttribute' => ['material_id' => 'id']],
             [['proveedor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Proveedor::class, 'targetAttribute' => ['proveedor_id' => 'id']],
@@ -50,6 +50,8 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
             'id' => 'ID',
             'material_id' => 'Material',
             'proveedor_id' => 'Proveedor',
+            'stock_min' => 'Stock Min',
+            'stock_act' => 'Stock Act',
             'precio' => 'Precio',
         ];
     }
@@ -92,6 +94,45 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
     public static function obtenerProveedor($prov_id){
         return Proveedor::find()->where(['id'=>$prov_id])->one();
     }
+
+    public static function comprobarStock($data){
+        if($data->stock_act == 0){
+            //No hay stock
+            return 'LightCoral';
+        }else if ($data->stock_act > $data->stock_min) {
+            //Si el stock actual supera el mínimo
+            //Calcular porcentaje del stock mínimo sobre el stock actual
+            $dif = $data->stock_act - $data->stock_min;
+            $porcentaje = ((float)$dif * 100) / $data->stock_act;
+            $porcentaje = round($porcentaje, 0);  //Eliminar los decimales
+
+            if ($porcentaje <= 30) {
+                //Cerca del mínimo de stock
+                return 'LightCoral';
+            } else if ($porcentaje <= 60) {
+                //Stock "normal"
+                return 'Gold';
+            } else if ($porcentaje > 60) {
+                //Hay stock de sobra
+                return 'LightGreen';
+            }
+        } else if($data->stock_act < $data->stock_min) {
+            //Stock por debajo de mínimos
+            return 'LightCoral';
+        } else if ($data->stock_act == $data->stock_min) {
+            //Hay stock de sobra
+            return 'Gold';
+        }
+    }
+
+    public static function stockActual(){
+        return [
+            "LightCoral"=>"No hay suficiente stock",
+            "Gold"=>"Queda poco stock",
+            "LightGreen"=>"Suficiente stock"
+        ];
+    }
+
     public static function lookup(){
 
         return ArrayHelper::map(self::find()->asArray()->all(),'id',function($data){

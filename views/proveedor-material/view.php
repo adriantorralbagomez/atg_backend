@@ -39,6 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label'=>'Proveedor',
                 'attribute'=>'proveedor.nombre'
             ],
+            'stock_min',
+            'stock_act',
             'precio',
         ],
     ]) ?>
