@@ -53,8 +53,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'label' => 'Stock Mínimo',
-                'attribute' => 'stock_min',
-                'value' => 'stock_min',
+                'attribute' => 'material_id',
+                'value' => 'material.stock_min',
+                //Devuelve los stock mínimos (no duplicados/repetidos)
+                'filter' => Material::filtrar_stock_min(),
             ],
             [
                 'label' => 'Stock Actual',

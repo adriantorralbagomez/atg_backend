@@ -17,7 +17,7 @@ class ProveedorMaterialSearch extends ProveedorMaterial
     public function rules()
     {
         return [
-            [['id', 'material_id', 'proveedor_id', 'stock_min', 'stock_act','nombre', 'precio'], 'safe'],
+            [['id', 'material_id', 'proveedor_id', 'stock_act','nombre', 'precio'], 'safe'],
         ];
     }
 
@@ -59,28 +59,27 @@ class ProveedorMaterialSearch extends ProveedorMaterial
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        //JOIN con la tabla MATERIALES para poder utilizar stock_min
+        $query->join('INNER JOIN','material as mat','mat.id = material_id');
         //Filtrar stock actual
         $stock_act = $this->stock_act;
-        
         switch ($stock_act) {
             case "LightCoral":
                 //No hay suficiente stock
-                $query->where('(stock_act = 0) or (stock_act < stock_min) or ((stock_act > stock_min) and ((((stock_act - stock_min) * 100) / stock_act) <= 30))');
+                $query->where('(stock_act = 0) or (stock_act < mat.stock_min) or ((stock_act > mat.stock_min) and ((((stock_act - mat.stock_min) * 100) / stock_act) <= 30))');
                 break;
             case "Gold":
                 //Queda poco stock
-                $query->where('(stock_act <> 0) or ((stock_act = stock_min) or  (stock_act > stock_min) and ((((stock_act - stock_min) * 100) / stock_act) <= 60))');
+                $query->where('(stock_act <> 0) and ((stock_act = mat.stock_min) or  (stock_act > mat.stock_min) and ((((stock_act - mat.stock_min) * 100) / stock_act) <= 60))');
                 break;
             case "LightGreen":
                 //Suficiente stock
-                $query->where('(stock_act <> 0) or (stock_act > stock_min) and ((((stock_act - stock_min) * 100) / stock_act) > 60)');
+                $query->where('(stock_act <> 0) and ((stock_act > mat.stock_min) and ((((stock_act - mat.stock_min) * 100) / stock_act) > 60))');
                 break;
         }
         $query->andFilterWhere(['like', 'id', $this->id])
                 ->andFilterWhere(['like', 'material_id', $this->getIdFromName($this->material)])
                 ->andFilterWhere(['like', 'proveedor_id', $this->getIdFromName($this->proveedor)])
-                ->andFilterWhere(['like', 'stock_min', $this->stock_min])
                 ->andFilterWhere(['like', 'precio', $this->precio]);
 
         return $dataProvider;

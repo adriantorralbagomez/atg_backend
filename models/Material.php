@@ -35,7 +35,7 @@ class Material extends \yii\db\ActiveRecord
         return [
             [['nombre'], 'required'],
             [['descripcion'], 'string'],
-            [['tipocaja_id'], 'integer'],
+            [['tipocaja_id', 'stock_min'], 'integer'],
             [['nombre'], 'string', 'max' => 20],
             [['tipocaja_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tipocaja::class, 'targetAttribute' => ['tipocaja_id' => 'id']],
         ];
@@ -50,6 +50,7 @@ class Material extends \yii\db\ActiveRecord
             'id' => 'ID',
             'nombre' => 'Nombre',
             'descripcion' => 'Descripcion',
+            'stock_min' => 'Stock Mínimo',
             'tipocaja_id' => 'Tipo de caja',
         ];
     }
@@ -71,5 +72,9 @@ class Material extends \yii\db\ActiveRecord
     public static function lookup(){
 
         return ArrayHelper::map(self::find()->asArray()->all(),'id','nombre');
+    }
+    public static function filtrar_stock_min(){
+        //Para el search en el index de proveedormaterial
+        return array_unique(ArrayHelper::map(self::find()->asArray()->all(),'id','stock_min'));
     }
 }

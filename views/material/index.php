@@ -45,7 +45,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => $this->context->getTiposCaja(),
                 'value' => 'tipocaja.nombre',
             ],
-
+            [
+                'label' => 'Stock Mínimo',
+                'attribute' => 'stock_min',
+                'value' => 'stock_min',
+            ],
             [
                 'class' => ActionColumn::class,
 

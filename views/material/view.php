@@ -37,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Tipo de caja',
                 'attribute' => 'tipocaja.nombre',
             ],
+            'stock_min',
         ],
     ]) ?>
 

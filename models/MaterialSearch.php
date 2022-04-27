@@ -18,7 +18,7 @@ class MaterialSearch extends Material
     public function rules()
     {
         return [
-            [['id', 'tipocaja_id', 'nombre', 'descripcion'], 'safe'],
+            [['id', 'tipocaja_id', 'nombre', 'stock_min', 'descripcion'], 'safe'],
         ];
     }
 
@@ -62,6 +62,7 @@ class MaterialSearch extends Material
         ]);
 
         $query->andFilterWhere(['like', 'nombre', $this->nombre])
+            ->andFilterWhere(['like', 'stock_min', $this->stock_min])
             ->andFilterWhere(['like', 'descripcion', $this->descripcion]);
 
         return $dataProvider;

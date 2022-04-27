@@ -17,8 +17,6 @@ checkGestion();
     <?= $form->field($model, 'material_id')->dropDownList($this->context->getMateriales(), ['prompt' => 'Selecciona Material...']) ?>
 
     <?= $form->field($model, 'proveedor_id')->dropDownList($this->context->getProveedores(), ['prompt' => 'Selecciona Proveedor...']) ?>
-    
-    <?= $form->field($model, 'stock_min')->textInput() ?>
 
     <?= $form->field($model, 'stock_act')->textInput() ?>
 
