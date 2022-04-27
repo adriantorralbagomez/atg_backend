@@ -74,8 +74,61 @@ class Material extends \yii\db\ActiveRecord
     const CAMPO = [0,1];
     const EXPEDICION = [2,3,4];
 
+    public static function calc_stock_act($material_id){
+        $stock_act = 0;
+        $provmats = ProveedorMaterial::find()->where(["material_id"=>$material_id])->all();
+        foreach ($provmats as $pm) {
+            $stock_act = $stock_act + $pm["stock_act"];
+        }
+        return $stock_act;
+    }
+
+    public static function comprobarStock($data, $stock_act){
+        if($stock_act == 0){
+            //No hay stock
+            return 'LightCoral';
+        }else if ($stock_act > $data->stock_min) {
+            //Si el stock actual supera el mínimo
+            //Calcular porcentaje del stock mínimo sobre el stock actual
+            $dif = $stock_act - $data->stock_min;
+            $porcentaje = ((float)$dif * 100) / $stock_act;
+            $porcentaje = round($porcentaje, 0);  //Eliminar los decimales
+
+            if ($porcentaje <= 30) {
+                //Cerca del mínimo de stock
+                return 'LightCoral';
+            } else if ($porcentaje <= 60) {
+                //Stock "normal"
+                return 'Gold';
+            } else if ($porcentaje > 60) {
+                //Hay stock de sobra
+                return 'LightGreen';
+            }
+        } else if($stock_act < $data->stock_min) {
+            //Stock por debajo de mínimos
+            return 'LightCoral';
+        } else if ($stock_act == $data->stock_min) {
+            //Hay stock de sobra
+            return 'Gold';
+        }
+    }
+
     public static function filtrar_stock_min(){
         //Para el search en el index de proveedormaterial
         return array_unique(ArrayHelper::map(self::find()->asArray()->all(),'id','stock_min'));
+    }
+
+    //ARREGLAR !!!!!!!!!!!
+    //!!!!!!!!
+    //!!!!!!!!
+    //!!!!!!!!
+    public static function filtrar_stock_act(){
+        //Para el search en el index de proveedormaterial
+        $materiales = Material::find()->all();
+        $stock_acts = [];
+        foreach ($materiales as $mt) {
+            array_push($stock_acts,Material::calc_stock_act($mt->id));
+        }
+        return array_unique($stock_acts);
     }
 }
