@@ -188,8 +188,12 @@ class OrdenController extends Controller
         return $stock_act;
     }
 
-    public function comprobar_stock($provmats, $total_stock_act, $stock_min)
+    //ARREGLAR !!!!!!
+    //!!!!
+    public function comprobar_stock($provmats, $stock_min)
     {//Comprobar stock
+        //Suma de todos los stock actual (de todos sus proveedores) del material
+        $total_stock_act = $this->calc_stock_act($provmats);
         if($total_stock_act < $stock_min){
             foreach ($provmats as $prmt) {
                 if (($prmt["stock_act"] > $stock_min) || ($prmt["stock_act"] > $stock_min)) {
@@ -208,17 +212,8 @@ class OrdenController extends Controller
                     //Cantidad de cajas a pedir
                     $restante = $stock_min - $total_stock_act;
                     $extra = $stock_min * 40 / 100;
-                    //$cantidad = $extra + $restante;
-                    //REVISAR
-                    //!!!!!!!!!!!!!!
-                    //!!!!!!!!!!!!!!
-                    //!!!!!!!!!!!!!!
-                    //!!!!!!!!!!!!!!
-                    //!!!!!!!!!!!!!!
-                    //!!!!!!!!!!!!!!
-                    //!!!!!!!!!!!!!!
-                    //!!!!!!!!!!!!!!
-                    $this->pedirpedido($prmt, $extra);
+                    $cantidad = $extra + $restante;
+                    $this->pedirpedido($prmt, $cantidad);
                 }
             }
         }
@@ -239,31 +234,26 @@ class OrdenController extends Controller
             $trans = Yii::$app->db->beginTransaction();
             $mats = [];
             $stock_min = 0;
-            $total_stock_act = 0;
             //comprobar cajas
             switch ($model->estado) {
                 case 'T':
                     //Materiales: cajas y palets campo
-                    $mats = Material::find()->where(["id" => Material::CAMPO])->asArray()->all();
+                    $mats = Material::find()->where(["id" => [1,2]])->asArray()->all();
                     foreach ($mats as $mat) {
                         //Lista de proveedores de material 
                         $provmats = ProveedorMaterial::find()->where(["material_id" => $mat["id"]])->asArray()->all();
-                        //Suma de todos los stock actual (de todos sus proveedores) del material
-                        $total_stock_act = $this->calc_stock_act($provmats);
                         $stock_min = $mat["stock_min"];
-                        $this->comprobar_stock($provmats, $total_stock_act, $stock_min);
+                        $this->comprobar_stock($provmats, $stock_min);
                     }
                     break;
                 case 'L':
                     //Materiales: caja final, cajas y palets expedición
-                    $mats = Material::find()->where(["id" => Material::EXPEDICION])->asArray()->all();
+                    $mats = Material::find()->where(["id" => [3,4,5]])->asArray()->all();
                     foreach ($mats as $mat) {
                         //Lista de proveedores de material 
                         $provmats = ProveedorMaterial::find()->where(["material_id" => $mat["id"]])->asArray()->all();
-                        //Suma de todos los stock actual (de todos sus proveedores) del material
-                        $total_stock_act = $this->calc_stock_act($provmats);
                         $stock_min = $mat["stock_min"];
-                        $this->comprobar_stock($provmats, $total_stock_act, $stock_min);
+                        $this->comprobar_stock($provmats, $stock_min);
                     }
                     break;
                 case 'E':
@@ -271,18 +261,25 @@ class OrdenController extends Controller
                     //-----------------
                     $costetotal = 0;
                     $coste_cajas = 0;
+                    $coste_cajas_exp = 0;
                     $cajas = Caja::find()->where(["orden_id"=>$model->id])->all();
                     //Calcular coste cajas
                     foreach ($cajas as $caja) {
-                        $coste_cajas .= $caja["proveedorMaterial"]["precio"];
+                        $coste_cajas =  $coste_cajas + $caja["proveedorMaterial"]["precio"];
                     }
                     //FALTA CALCULAR EL COSTE DE LA CAJA DE 15 KG (CAJA DE EXPEDICIÓN)
-                    $ncajexp = count($cajas) / 30;
-                    //!!!
+                    if(count($cajas)>30){
+                        $ncajexp = ceil(count($cajas) / 30); 
+                    }else{
+                        $ncajexp = 1;
+                    }
+                    $prov_cajexp = ProveedorMaterial::find()->where(["material_id"=>3])->orderBy(['precio' => SORT_ASC])->one();
+                    $coste_cajas_exp = $prov_cajexp["precio"] * $ncajexp;
+                    //!!! ARREGLAR
                     //CALCULAR COSTE PALETS
 
-                    //!!Sumar el resto de costes
-                    $costetotal = $coste_cajas;
+                    //!!Sumar el resto de costes (falta costes de palets)
+                    $costetotal = $coste_cajas + $coste_cajas_exp;
                     $model->coste = $costetotal;
                     break;
             }
@@ -299,14 +296,14 @@ class OrdenController extends Controller
         ]);
     }
 
-    function pedirpedido($material, $dif)
+    function pedirpedido($material, $cant)
     {
         //Pedir material
         $pedstock = new Pedidostock();
         //Se obtiene el primer proveedor - material con precio más bajo
         $provmat = ProveedorMaterial::find()->where(["material_id" => $material["id"]])->orderBy(['precio' => SORT_ASC])->one();
         $pedstock->proveedor_material_id = $provmat->id;
-        $pedstock->cantidad = $dif;
+        $pedstock->cantidad = $cant;
         $pedstock->estado = "P";
         $pedstock->fecha = date('Y-m-d H:i:s');
         $pedstock->save();

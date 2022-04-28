@@ -13,7 +13,6 @@ use yii\helpers\ArrayHelper;
  * @property string|null $descripcion
  * @property int|null $tipocaja_id
  * @property int $stock_min
- * @property int $stock_act
  *
  * @property Tipocaja $tipocaja
  */
@@ -70,10 +69,6 @@ class Material extends \yii\db\ActiveRecord
         return ArrayHelper::map(self::find()->asArray()->all(),'id','nombre');
     }
 
-    //IDS MATERIALES
-    const CAMPO = [0,1];
-    const EXPEDICION = [2,3,4];
-
     public static function calc_stock_act($material_id){
         $stock_act = 0;
         $provmats = ProveedorMaterial::find()->where(["material_id"=>$material_id])->all();
@@ -118,11 +113,11 @@ class Material extends \yii\db\ActiveRecord
         return array_unique(ArrayHelper::map(self::find()->asArray()->all(),'id','stock_min'));
     }
 
-    //ARREGLAR !!!!!!!!!!!
-    //!!!!!!!!
-    //!!!!!!!!
-    //!!!!!!!!
     public static function filtrar_stock_act(){
+        //ARREGLAR !!!!!!!!!!!
+        //!!!!!!!!
+        //!!!!!!!!
+        //!!!!!!!!
         //Para el search en el index de proveedormaterial
         $materiales = Material::find()->all();
         $stock_acts = [];
