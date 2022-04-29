@@ -255,32 +255,71 @@ class OrdenController extends Controller
                         $stock_min = $mat["stock_min"];
                         $this->comprobar_stock($provmats, $stock_min);
                     }
+                    //CALCULAR COSTE
+                    //-----------------
+                    //
+                    $coste_prod_total = 0;
+                    $coste_cajas_prod = 0;
+                    $npaletscampo = 0;
+                    //Obtener todas las cajas menos las de Expedición
+                    $cajas_prod = Caja::find()->where(["orden_id"=>$model->id])->andWhere(["<>","estado", "E"])->all();
+                    foreach ($cajas_prod as $cajaprod) {//calcular coste cajas
+                        $coste_prod_total = $coste_prod_total + $cajaprod["proveedorMaterial"]["precio"];
+                    }
+                    //Calcular el coste de los palets de campo
+                    //En un palet caben aproximadamente 100 cajas (los palets soportan de media 1500kg)
+                    //1500 entre 15kg = 100 cajas
+                    if(count($cajas_prod)>100){
+                        $npaletscampo = ceil(count($cajas_prod) / 100); 
+                    }else{
+                        $npaletscampo = 1;
+                    }
+                    //Obtener proveedor de palets de campo más barato
+                    $prov_paletcampo = ProveedorMaterial::find()->where(["material_id"=>2])->orderBy(['precio' => SORT_ASC])->one();
+                    $coste_palet_campo = $prov_paletcampo["precio"] * $npaletscampo;
+                    $coste_prod_total = $coste_cajas_prod + $coste_palet_campo;
+                    $model->coste = $coste_prod_total;
                     break;
                 case 'E':
                     //CALCULAR COSTE
                     //-----------------
-                    $costetotal = 0;
+                    $coste_exp_total = 0;
                     $coste_cajas = 0;
                     $coste_cajas_exp = 0;
-                    $cajas = Caja::find()->where(["orden_id"=>$model->id])->all();
+                    $ncajexp = 0;
+                    $npaletsxp = 0;
+                    //Obtener cajas de esa orden que han pasado a expedición
+                    $cajas = Caja::find()->where(["orden_id"=>$model->id])->andWhere(["estado"=>"E"])->all();
                     //Calcular coste cajas
                     foreach ($cajas as $caja) {
                         $coste_cajas =  $coste_cajas + $caja["proveedorMaterial"]["precio"];
                     }
-                    //FALTA CALCULAR EL COSTE DE LA CAJA DE 15 KG (CAJA DE EXPEDICIÓN)
-                    if(count($cajas)>30){
-                        $ncajexp = ceil(count($cajas) / 30); 
-                    }else{
+                    //Calcular el coste de las cajas de 15 KG (CAJA DE EXPEDICIÓN)
+                    //En una caja de expedición caben 30 cajas finales
+                    if(count($cajas)>30){//Comprobar si hay más de 30 cajas finales
+                        $ncajexp = ceil(count($cajas) / 30); //calcular nº de cajas de expedicón
+                    }else{//si no llegan a las 30 cajas finales se utiliza solo 1 caja de expedición de 15 kg
                         $ncajexp = 1;
                     }
+                    //Obtener proveedor de cajas de expedición más barato
                     $prov_cajexp = ProveedorMaterial::find()->where(["material_id"=>3])->orderBy(['precio' => SORT_ASC])->one();
                     $coste_cajas_exp = $prov_cajexp["precio"] * $ncajexp;
-                    //!!! ARREGLAR
-                    //CALCULAR COSTE PALETS
+                    
+                    //Calcular el coste de los palets de expedición
+                    //En un palet caben aproximadamente 100 cajas (los palets soportan de media 1500kg)
+                    //1500 entre 15kg = 100 cajas
+                    if($ncajexp>100){
+                        $npaletsxp = ceil($ncajexp / 100); 
+                    }else{
+                        $npaletsxp = 1;
+                    }
+                    //Obtener proveedor de palets de expedición más barato
+                    $prov_paletexp = ProveedorMaterial::find()->where(["material_id"=>5])->orderBy(['precio' => SORT_ASC])->one();
+                    $coste_palet_exp = $prov_paletexp["precio"] * $npaletsxp;
 
-                    //!!Sumar el resto de costes (falta costes de palets)
-                    $costetotal = $coste_cajas + $coste_cajas_exp;
-                    $model->coste = $costetotal;
+                    //Sumar el resto de costes
+                    $coste_exp_total = $coste_cajas + $coste_cajas_exp + $coste_palet_exp;
+                    $model->coste = $model->coste + $coste_exp_total;
                     break;
             }
 
