@@ -16,7 +16,6 @@ use app\models\Pedidoinfo;
 use app\models\OrdenSearch;
 use yii\filters\VerbFilter;
 use app\models\OrdenPedidoinfo;
-use app\models\OrdenProvmat;
 use app\models\PedidoinfoSearch;
 use app\models\Pedidostock;
 use app\models\ProveedorMaterial;
@@ -189,7 +188,7 @@ class OrdenController extends Controller
     }
 
     //ARREGLAR !!!!!!
-    //!!!!
+    //!!!! SE CREAN PEDIDOS QUE NO TOCAN
     public function comprobar_stock($provmats, $stock_min)
     {//Comprobar stock
         //Suma de todos los stock actual (de todos sus proveedores) del material
