@@ -13,6 +13,7 @@ use yii\helpers\ArrayHelper;
  * @property string|null $descripcion
  * @property int|null $tipocaja_id
  * @property int $stock_min
+ * @property int $stock_act
  *
  * @property Tipocaja $tipocaja
  */
@@ -50,6 +51,7 @@ class Material extends \yii\db\ActiveRecord
             'nombre' => 'Nombre',
             'descripcion' => 'Descripcion',
             'stock_min' => 'Stock Mínimo',
+            'stock_act' => 'Stock Actual',
             'tipocaja_id' => 'Tipo de caja',
         ];
     }
@@ -113,17 +115,11 @@ class Material extends \yii\db\ActiveRecord
         return array_unique(ArrayHelper::map(self::find()->asArray()->all(),'id','stock_min'));
     }
 
-    public static function filtrar_stock_act(){
-        //ARREGLAR !!!!!!!!!!!
-        //!!!!!!!!
-        //!!!!!!!!
-        //!!!!!!!!
-        //Para el search en el index de proveedormaterial
-        $materiales = Material::find()->all();
-        $stock_acts = [];
-        foreach ($materiales as $mt) {
-            array_push($stock_acts,Material::calc_stock_act($mt->id));
-        }
-        return array_unique($stock_acts);
+    public static function stockActual(){
+        return [
+            "LightCoral"=>"No hay suficiente stock",
+            "Gold"=>"Queda poco stock",
+            "LightGreen"=>"Suficiente stock"
+        ];
     }
 }

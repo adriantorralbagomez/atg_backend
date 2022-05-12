@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'label' => 'Stock Actual Total',
-                'attribute' => 'id',
+                'attribute' => 'stock_act',
                 'value' => function ($data) {
                     return Material::calc_stock_act($data->id);
                 },
@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $color = Material::comprobarStock($data, Material::calc_stock_act($data->id));
                     return ['style' => 'background-color:' . $color . '; color:white;'];
                 },
-                'filter' => Material::filtrar_stock_act(),
+                'filter' => Material::stockActual(),
             ],
             [
                 'class' => ActionColumn::class,
