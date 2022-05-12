@@ -72,15 +72,23 @@ class MaterialSearch extends Material
             switch ($stock_act) {
                 case "LightCoral":
                     //No hay suficiente stock
-                    $query->where('('.$stock_total_mat.' = 0) or ('.$stock_total_mat.' < stock_min) or (('.$stock_total_mat.' > stock_min) and (((('.$stock_total_mat.' - stock_min) * 100) / '.$stock_total_mat.') <= 30))');
+                    $query->where('('.$stock_total_mat.' = 0) 
+                    or ('.$stock_total_mat.' < stock_min) 
+                    or (('.$stock_total_mat.' > stock_min) 
+                    and (((('.$stock_total_mat.' - stock_min) * 100) / '.$stock_total_mat.') <= 30))');
                     break;
                 case "Gold":
                     //Queda poco stock
-                    $query->where('('.$stock_total_mat.' <> 0) and (('.$stock_total_mat.' = stock_min) or  ('.$stock_total_mat.' > stock_min) and (((('.$stock_total_mat.' - stock_min) * 100) / '.$stock_total_mat.') <= 60))');
+                    $query->where('('.$stock_total_mat.' <> 0) 
+                    and (('.$stock_total_mat.' = stock_min) 
+                    or  ('.$stock_total_mat.' > stock_min) 
+                    and (((('.$stock_total_mat.' - stock_min) * 100) / '.$stock_total_mat.') <= 60))');
                     break;
                 case "LightGreen":
                     //Suficiente stock
-                    $query->where('('.$stock_total_mat.' <> 0) and (('.$stock_total_mat.' > stock_min) and (((('.$stock_total_mat.' - stock_min) * 100) / '.$stock_total_mat.') > 60))');
+                    $query->where('('.$stock_total_mat.' <> 0) 
+                    and (('.$stock_total_mat.' > stock_min) 
+                    and (((('.$stock_total_mat.' - stock_min) * 100) / '.$stock_total_mat.') > 60))');
                     break;
             }
         }
