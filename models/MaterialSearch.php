@@ -42,7 +42,7 @@ class MaterialSearch extends Material
      */
     public function search($params)
     {
-        $query = Material::find();
+        $query = Material::find()->alias('mat');
 
         // add conditions that should always apply here
 
@@ -64,33 +64,22 @@ class MaterialSearch extends Material
             'tipocaja_id' => $this->tipocaja_id,
         ]);
         $stock_act = $this->stock_act;
-        $materiales = Material::find()->all();
-        //$query->join("INNER JOIN", "proveedor_material as provmat", " mat.id = provmat.material_id");
-        $stock_total_mat = 0;
-        foreach ($materiales as $mat) {
-            $stock_total_mat = Material::calc_stock_act($mat["id"]);
-            switch ($stock_act) {
-                case "LightCoral":
-                    //No hay suficiente stock
-                    $query->where('('.$stock_total_mat.' = 0) 
-                    or ('.$stock_total_mat.' < stock_min) 
-                    or (('.$stock_total_mat.' > stock_min) 
-                    and (((('.$stock_total_mat.' - stock_min) * 100) / '.$stock_total_mat.') <= 30))');
-                    break;
-                case "Gold":
-                    //Queda poco stock
-                    $query->where('('.$stock_total_mat.' <> 0) 
-                    and (('.$stock_total_mat.' = stock_min) 
-                    or  ('.$stock_total_mat.' > stock_min) 
-                    and (((('.$stock_total_mat.' - stock_min) * 100) / '.$stock_total_mat.') <= 60))');
-                    break;
-                case "LightGreen":
-                    //Suficiente stock
-                    $query->where('('.$stock_total_mat.' <> 0) 
-                    and (('.$stock_total_mat.' > stock_min) 
-                    and (((('.$stock_total_mat.' - stock_min) * 100) / '.$stock_total_mat.') > 60))');
-                    break;
-            }
+        $query->leftjoin("proveedor_material as provmat", "mat.id = provmat.material_id");
+        //select sum(provmat.stock_act)
+        $sum_stock_act = '(select sum(provmat.stock_act))';
+        switch ($stock_act) {
+            case "LightCoral":
+                //No hay suficiente stock
+                $query->where('('.$sum_stock_act.' = 0) or (('.$sum_stock_act.' < mat.stock_min) or (('.$sum_stock_act.' > mat.stock_min) and (((('.$sum_stock_act.' - mat.stock_min) * 100) / '.$sum_stock_act.') <= 30)))');
+                break;
+            case "Gold":
+                //Queda poco stock
+                $query->where('('.$sum_stock_act.' <> 0) and ((('.$sum_stock_act.' = mat.stock_min) or  ('.$sum_stock_act.' > mat.stock_min)) and (((('.$sum_stock_act.' - mat.stock_min) * 100) / '.$sum_stock_act.') BETWEEN 31 AND 60))');
+                break;
+            case "LightGreen":
+                //Suficiente stock
+                $query->where('('.$sum_stock_act.' <> 0) and (('.$sum_stock_act.' > mat.stock_min) and (((('.$sum_stock_act.' - mat.stock_min) * 100) / '.$sum_stock_act.') > 60))');
+                break;
         }
         $query->andFilterWhere(['like', 'nombre', $this->nombre])
             ->andFilterWhere(['like', 'descripcion', $this->descripcion])
