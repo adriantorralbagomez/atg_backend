@@ -68,15 +68,15 @@ class MaterialSearch extends Material
         //select sum(provmat.stock_act)
         $sum_stock_act = '(select sum(provmat.stock_act))';
         switch ($stock_act) {
-            case "LightCoral":
+            case "N":
                 //No hay suficiente stock
-                $query->where('('.$sum_stock_act.' = 0) or (('.$sum_stock_act.' < mat.stock_min) or (('.$sum_stock_act.' > mat.stock_min) and (((('.$sum_stock_act.' - mat.stock_min) * 100) / '.$sum_stock_act.') <= 30)))');
+                $query->where('('.$sum_stock_act.' = 0) or (('.$sum_stock_act.' < mat.stock_min) or (('.$sum_stock_act.' > mat.stock_min) and (((('.$sum_stock_act.' - mat.stock_min) * 100) / '.$sum_stock_act.') < 30)))');
                 break;
-            case "Gold":
+            case "P":
                 //Queda poco stock
-                $query->where('('.$sum_stock_act.' <> 0) and ((('.$sum_stock_act.' = mat.stock_min) or  ('.$sum_stock_act.' > mat.stock_min)) and (((('.$sum_stock_act.' - mat.stock_min) * 100) / '.$sum_stock_act.') BETWEEN 31 AND 60))');
+                $query->where('('.$sum_stock_act.' <> 0) and ((('.$sum_stock_act.' = mat.stock_min) or  ('.$sum_stock_act.' > mat.stock_min)) and (((('.$sum_stock_act.' - mat.stock_min) * 100) / '.$sum_stock_act.') BETWEEN 30 AND 60))');
                 break;
-            case "LightGreen":
+            case "S":
                 //Suficiente stock
                 $query->where('('.$sum_stock_act.' <> 0) and (('.$sum_stock_act.' > mat.stock_min) and (((('.$sum_stock_act.' - mat.stock_min) * 100) / '.$sum_stock_act.') > 60))');
                 break;

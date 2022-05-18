@@ -117,9 +117,9 @@ class Material extends \yii\db\ActiveRecord
 
     public static function stockActual(){
         return [
-            "LightCoral"=>"No hay suficiente stock",
-            "Gold"=>"Queda poco stock",
-            "LightGreen"=>"Suficiente stock"
+            "N"=>"No hay suficiente stock",
+            "P"=>"Queda poco stock",
+            "S"=>"Suficiente stock"
         ];
     }
 }
