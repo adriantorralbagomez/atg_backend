@@ -65,15 +65,15 @@ class ProveedorMaterialSearch extends ProveedorMaterial
         //Filtrar stock actual
         $stock_act = $this->stock_act;
         switch ($stock_act) {
-            case "LightCoral":
+            case "N":
                 //No hay suficiente stock
-                $query->where('(stock_act = 0) or (stock_act < mat.stock_min) or ((stock_act > mat.stock_min) and ((((stock_act - mat.stock_min) * 100) / stock_act) <=30 ))');
+                $query->where('(stock_act = 0) or (stock_act < mat.stock_min) or ((stock_act > mat.stock_min) and ((((stock_act - mat.stock_min) * 100) / stock_act) < 30 ))');
                 break;
-            case "Gold":
+            case "P":
                 //Queda poco stock
-                $query->where('(stock_act <> 0) and ((stock_act = mat.stock_min) or  (stock_act > mat.stock_min) and ((((stock_act - mat.stock_min) * 100) / stock_act) BETWEEN 31 AND 60))');
+                $query->where('(stock_act <> 0) and ((stock_act = mat.stock_min) or  (stock_act > mat.stock_min) and ((((stock_act - mat.stock_min) * 100) / stock_act) BETWEEN 30 AND 60))');
                 break;
-            case "LightGreen":
+            case "S":
                 //Suficiente stock
                 $query->where('(stock_act <> 0) and ((stock_act > mat.stock_min) and ((((stock_act - mat.stock_min) * 100) / stock_act) > 60))');
                 break;

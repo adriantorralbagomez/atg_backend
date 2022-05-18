@@ -105,10 +105,10 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
             $porcentaje = ((float)$dif * 100) / $data->stock_act;
             $porcentaje = round($porcentaje, 0);  //Eliminar los decimales
 
-            if ($porcentaje <= 30) {
+            if ($porcentaje < 30) {
                 //Cerca del mínimo de stock
                 return 'LightCoral';
-            } else if ($porcentaje <= 60) {
+            } else if ($porcentaje >= 30 && $porcentaje <= 60) {
                 //Stock "normal"
                 return 'Gold';
             } else if ($porcentaje > 60) {
@@ -126,9 +126,9 @@ class ProveedorMaterial extends \yii\db\ActiveRecord
 
     public static function stockActual(){
         return [
-            "LightCoral"=>"No hay suficiente stock",
-            "Gold"=>"Queda poco stock",
-            "LightGreen"=>"Suficiente stock"
+            "N"=>"No hay suficiente stock",
+            "P"=>"Queda poco stock",
+            "S"=>"Suficiente stock"
         ];
     }
 
