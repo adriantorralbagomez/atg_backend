@@ -204,7 +204,7 @@ class OrdenController extends Controller
         $total_stock_act = $this->calc_stock_act($provmats);
         if ($total_stock_act < $stock_min) {
             foreach ($provmats as $prmt) {
-                if (($prmt["stock_act"] > $stock_min) || ($prmt["stock_act"] > $stock_min)) {
+                if ($prmt["stock_act"] > $stock_min) {
                     //Si el stock actual supera el mínimo
                     //Calcular porcentaje del stock mínimo sobre el stock actual
                     $dif = $prmt["stock_act"] - $stock_min;
@@ -215,7 +215,7 @@ class OrdenController extends Controller
                         //Cerca del mínimo de stock
                         $this->pedirpedido($prmt, $dif * 2);
                     }
-                } else if (($prmt["stock_act"] < $stock_min) || ($prmt["stock_act"] < $stock_min)) {
+                } else if (($prmt["stock_act"] < $stock_min) || ($prmt["stock_act"] == 0) || ($prmt["stock_act"] == $stock_min)) {
                     //Stock por debajo de mínimos
                     //Cantidad de cajas a pedir
                     $restante = $stock_min - $total_stock_act;
@@ -299,23 +299,25 @@ class OrdenController extends Controller
                     //
                     $coste_prod_total = 0;
                     $coste_cajas_prod = 0;
-                    $ncajprod = 0;
+                    $npaletprod = 0;
                     //Obtener todas las cajas menos las de Expedición
                     $cajas_prod = Caja::find()->where(["orden_id" => $model->id])->andWhere(["<>", "estado", "E"])->all();
                     foreach ($cajas_prod as $cajaprod) { //calcular coste cajas
-                        $coste_prod_total = $coste_prod_total + $cajaprod["proveedorMaterial"]["precio"];
+                        $coste_cajas_prod = $coste_cajas_prod + $cajaprod["proveedorMaterial"]["precio"];
                     }
+
                     //Calcular el coste de los palets de campo
                     //En un palet caben aproximadamente 100 cajas (los palets soportan de media 1500kg)
                     //1500 entre 15kg = 100 cajas
                     if (count($cajas_prod) > 100) {
-                        $ncajprod = ceil(count($cajas_prod) / 100);
+                        $npaletprod = ceil(count($cajas_prod) / 100);
                     } else {
-                        $ncajprod = 1;
+                        $npaletprod = 1;
                     }
                     //Obtener proveedor de palets de campo (hasta producción) más barato
                     $prov_paletprod = ProveedorMaterial::find()->where(["material_id" => 2])->orderBy(['precio' => SORT_ASC])->one();
-                    $coste_palets_prod = $prov_paletprod["precio"] * $ncajprod;
+                    $coste_palets_prod = $prov_paletprod["precio"] * $npaletprod;
+
                     $coste_prod_total = $coste_cajas_prod + $coste_palets_prod;
                     $model->coste = $coste_prod_total;
                     $model->coste_cajas_prod = $coste_cajas_prod;
