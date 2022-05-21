@@ -36,6 +36,12 @@ checkAdmin();
     <?= $form->field($model, 'estado')->dropDownList(Orden::$estados, ['prompt' => 'Selecciona estado...']) ?>
 
     <?= $form->field($model, 'coste')->textInput() ?>
+    <?= $form->field($model, 'coste_prod_total')->textInput() ?>
+    <?= $form->field($model, 'coste_palets_prod')->textInput() ?>
+    <?= $form->field($model, 'coste_cajas_prod')->textInput() ?>
+    <?= $form->field($model, 'coste_exp_total')->textInput() ?>
+    <?= $form->field($model, 'coste_cajas_exp')->textInput() ?>
+    <?= $form->field($model, 'coste_palets_exp')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>

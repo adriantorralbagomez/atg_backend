@@ -58,7 +58,14 @@ YiiAsset::register($this);
                     return $data->Estado;     
                 }
             ],
-            'coste'
+            'coste',
+            'coste_prod_total',
+            'coste_palets_prod',
+            'coste_cajas_prod',
+            'coste_exp_total',
+            'coste_cajas_exp',
+            'coste_palets_exp',
+            
         ],
     ]) ?>
 

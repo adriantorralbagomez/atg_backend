@@ -17,10 +17,18 @@ use yii\helpers\ArrayHelper;
  * @property string $fecha
  * @property int $cantidad
  * @property string $estado
+ * @property float $coste 
+ * @property float $coste_prod_total 
+ * @property float $coste_palets_prod 
+ * @property float $coste_cajas_prod 
+ * @property float $coste_exp_total 
+ * @property float $coste_cajas_exp 
+ * @property float $coste_palets_exp 
  *
  * @property Caja[] $cajas
  * @property Finca $finca
  * @property OrdenPedidoinfo[] $ordenPedidoinfos
+ * @property Parcela $parcela 
  * @property Variedad $variedad
  */
 class Orden extends ActiveRecord
@@ -42,7 +50,7 @@ class Orden extends ActiveRecord
             [['lote', 'variedad_id', 'finca_id', 'parcela_id', 'fecha', 'cantidad'], 'required'],
             [['variedad_id', 'finca_id', 'parcela_id', 'cantidad'], 'integer'],
             [['fecha'], 'safe'],
-            [['coste'], 'number'],
+            [['coste', 'coste_prod_total', 'coste_palets_prod', 'coste_cajas_prod', 'coste_exp_total', 'coste_cajas_exp', 'coste_palets_exp'], 'number'],
             [['estado'], 'string'],
             [['lote'], 'string', 'max' => 20],
             [['variedad_id'], 'exist', 'skipOnError' => true, 'targetClass' => Variedad::class, 'targetAttribute' => ['variedad_id' => 'id']],
@@ -64,7 +72,13 @@ class Orden extends ActiveRecord
             'fecha' => 'Fecha',
             'cantidad' => 'Cantidad',
             'estado' => 'Estado',
-            'coste' => 'Coste',
+            'coste' => 'Coste Total',
+            'coste_prod_total' => 'Coste Producción Total',
+            'coste_palets_prod' => 'Coste Palets Producción',
+            'coste_cajas_prod' => 'Coste Cajas Producción',
+            'coste_exp_total' => 'Coste Expedición Total',
+            'coste_cajas_exp' => 'Coste Cajas Expedición',
+            'coste_palets_exp' => 'Coste Palets Expedición',
         ];
     }
 
@@ -137,8 +151,9 @@ class Orden extends ActiveRecord
         return self::$estados[$this->estado];
     }
 
-    public static function lookup(){
+    public static function lookup()
+    {
 
-        return ArrayHelper::map(self::find()->asArray()->all(),'id','lote');
+        return ArrayHelper::map(self::find()->asArray()->all(), 'id', 'lote');
     }
 }
