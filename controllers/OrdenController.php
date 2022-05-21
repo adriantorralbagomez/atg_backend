@@ -146,6 +146,14 @@ class OrdenController extends Controller
                     $orden->fecha = $post['Orden']['fecha'];
                     $orden->cantidad = $cant_tot;
                     $orden->estado = "P";
+                    //Poner costes a 0
+                    $orden->coste = 0;
+                    $orden->coste_prod_total = 0;
+                    $orden->coste_palets_prod = 0;
+                    $orden->coste_cajas_prod = 0;
+                    $orden->coste_exp_total = 0;
+                    $orden->coste_cajas_exp = 0;
+                    $orden->coste_palets_exp = 0;
                     //Se crea por defecto en estado P, se puede cambiar luego
                     if ($orden->save()) {
                         foreach ($ids as $id) {
