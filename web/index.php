@@ -44,13 +44,15 @@ function checkAdmin(){
         exit;
     }
 }
-//Si el usuario no es gestión, restringe el
+//Si el usuario no es gestión o administrador, restringe el
 //acceso y devuelve al login
 function checkGestion(){
     if(!isGestion()){
-        $url = Url::home();
-        header("Location: $url?r=site%2Flogin");
-        exit;
+        if(!isAdmin()){
+            $url = Url::home();
+            header("Location: $url?r=site%2Flogin");
+            exit;
+        }
     }
 }
 
