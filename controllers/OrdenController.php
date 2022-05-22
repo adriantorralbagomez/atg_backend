@@ -196,33 +196,37 @@ class OrdenController extends Controller
         return $stock_act;
     }
 
-    //ARREGLAR !!!!!!
-    //!!!! SE CREAN PEDIDOS QUE NO TOCAN
-    public function comprobar_stock($provmats, $stock_min)
-    { //Comprobar stock
-        //Suma de todos los stock actual (de todos sus proveedores) del material
-        $total_stock_act = $this->calc_stock_act($provmats);
-        if ($total_stock_act < $stock_min) {
-            foreach ($provmats as $prmt) {
-                if ($prmt["stock_act"] > $stock_min) {
-                    //Si el stock actual supera el mínimo
-                    //Calcular porcentaje del stock mínimo sobre el stock actual
-                    $dif = $prmt["stock_act"] - $stock_min;
-                    $porcentaje = ((float)$dif * 100) / $prmt["stock_act"];
-                    $porcentaje = round($porcentaje, 0);  //Eliminar los decimales
-
-                    if ($porcentaje <= 30) {
-                        //Cerca del mínimo de stock
-                        $this->pedirpedido($prmt, $dif * 2);
-                    }
-                } else if (($prmt["stock_act"] < $stock_min) || ($prmt["stock_act"] == 0) || ($prmt["stock_act"] == $stock_min)) {
-                    //Stock por debajo de mínimos
-                    //Cantidad de cajas a pedir
-                    $restante = $stock_min - $total_stock_act;
-                    $extra = $stock_min * 40 / 100;
+    public function compr_stock($mats)
+    {//COMPROBAR STOCK Y PEDIR SI NO HAY SUFICIENTE
+        foreach ($mats as $mat) {
+            $stock_act = Material::calc_stock_act($mat["id"]);
+            if($stock_act > $mat["stock_min"]){
+                //Comprobar si hay suficiente stock
+                $dif = $stock_act - $mat["stock_min"];
+                $porcentaje = ((float)$dif * 100) / $stock_act;
+                $porcentaje = round($porcentaje, 0);  //Eliminar los decimales
+                if ($porcentaje <= 30) {
+                    $restante = $stock_act - $mat["stock_min"];
+                    $extra = $mat["stock_min"] * 40 / 100;
                     $cantidad = $extra + $restante;
-                    $this->pedirpedido($prmt, $cantidad);
+                    $prmt = ProveedorMaterial::find()->where(["material_id"=>$mat["id"]])->orderBy(['precio' => SORT_ASC])->one();
+                    //Cerca del mínimo de stock
+                    $this->pedirpedido($prmt, $dif * 2);
                 }
+            }else if($stock_act < $mat["stock_min"]){
+                //Stock actual por debajo del mínimo
+                $restante = $mat["stock_min"] - $stock_act;
+                $extra = $mat["stock_min"] * 40 / 100;
+                $cantidad = $extra + $restante;
+                $prmt = ProveedorMaterial::find()->where(["material_id"=>$mat["id"]])->orderBy(['precio' => SORT_ASC])->one();
+                $this->pedirpedido($prmt, $cantidad);
+            }else if($stock_act == $mat["stock_min"] || $stock_act == 0){
+                //Stock actual es el mínimo o 0
+                $restante = $mat["stock_min"];
+                $extra = $mat["stock_min"] * 40 / 100;
+                $cantidad = $extra + $restante;
+                $prmt = ProveedorMaterial::find()->where(["material_id"=>$mat["id"]])->orderBy(['precio' => SORT_ASC])->one();
+                $this->pedirpedido($prmt, $cantidad);
             }
         }
     }
@@ -269,7 +273,6 @@ class OrdenController extends Controller
             //Inicio de transacción
             $trans = Yii::$app->db->beginTransaction();
             $mats = [];
-            $stock_min = 0;
 
             $model = $this->comprobar_costes($model);
 
@@ -278,25 +281,17 @@ class OrdenController extends Controller
                 case 'T':
                     //Materiales: cajas y palets campo
                     $mats = Material::find()->where(["id" => [1, 2]])->asArray()->all();
-                    foreach ($mats as $mat) {
-                        //Lista de proveedores de material 
-                        $provmats = ProveedorMaterial::find()->where(["material_id" => $mat["id"]])->asArray()->all();
-                        $stock_min = $mat["stock_min"];
-                        $this->comprobar_stock($provmats, $stock_min);
-                    }
+                    //COMPROBAR SI HAY STOCK Y SI NO PEDIR
+                    $this->compr_stock($mats);
                     break;
                 case 'L':
                     //Materiales: caja final, cajas y palets expedición
+                    //SE COMPRUEBAN EN LÍNEA DE PRODUCCIÓN PARA ASÍ PEDIRLOS ANTES DE QUE LLEGUEN
                     $mats = Material::find()->where(["id" => [3, 4, 5]])->asArray()->all();
-                    foreach ($mats as $mat) {
-                        //Lista de proveedores de material 
-                        $provmats = ProveedorMaterial::find()->where(["material_id" => $mat["id"]])->asArray()->all();
-                        $stock_min = $mat["stock_min"];
-                        $this->comprobar_stock($provmats, $stock_min);
-                    }
+                    //COMPROBAR SI HAY STOCK Y SI NO PEDIR
+                    $this->compr_stock($mats);
                     //CALCULAR COSTE
                     //-----------------
-                    //
                     $coste_prod_total = 0;
                     $coste_cajas_prod = 0;
                     $npaletprod = 0;
