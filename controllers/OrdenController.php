@@ -232,9 +232,7 @@ class OrdenController extends Controller
     }
 
     public function comprobar_costes($model)
-    {
-        //Comprobar que se rellenen costes,
-        //si no están rellenados se ponen a 0
+    {//Comprobar que se rellenen costes, si no están rellenados se ponen a 0
         if ($model->coste == null) {
             $model->coste = 0;
         }
@@ -377,13 +375,10 @@ class OrdenController extends Controller
         ]);
     }
 
-    function pedirpedido($material, $cant)
-    {
-        //Pedir material
+    function pedirpedido($prmt, $cant)
+    {//Pedir material
         $pedstock = new Pedidostock();
-        //Se obtiene el primer proveedor - material con precio más bajo
-        $provmat = ProveedorMaterial::find()->where(["material_id" => $material["id"]])->orderBy(['precio' => SORT_ASC])->one();
-        $pedstock->proveedor_material_id = $provmat->id;
+        $pedstock->proveedor_material_id = $prmt->id;
         $pedstock->cantidad = $cant;
         $pedstock->estado = "P";
         $pedstock->fecha = date('Y-m-d H:i:s');
