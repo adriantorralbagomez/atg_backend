@@ -1,6 +1,6 @@
 <?php
 return [
-    ["label" => "Inicio", "url" => "#", "icon" => "home"],
+    ["label" => "Inicio", "url" => "/#", "icon" => "home"],
     ['label' => 'Usuarios', "url" => ["/usuario"], "icon" => "users"],
     ['label' => 'Clientes', 'url' => ['/cliente'], "icon" => "briefcase"],
     [
