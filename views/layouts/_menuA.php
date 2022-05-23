@@ -1,6 +1,6 @@
 <?php
 return [
-    ["label" => "Inicio", "url" => "/gestion_backend_atg", "icon" => "home"],
+    ["label" => "Inicio", "url" => "/gestion_backend_atg/", "icon" => "home"],
     ['label' => 'Usuarios', "url" => ["/usuario"], "icon" => "users"],
     ['label' => 'Clientes', 'url' => ['/cliente'], "icon" => "briefcase"],
     [
