@@ -24,6 +24,7 @@ $config = [
     ],
     'language' => 'es',
     'name' => 'uvademesa',
+    'timeZone'=>'Europe/Madrid',
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
