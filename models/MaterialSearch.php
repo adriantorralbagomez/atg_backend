@@ -69,24 +69,23 @@ class MaterialSearch extends Material
         switch ($stock_act) {
             case "N":
                 //No hay suficiente stock
-                $query->where('('.$sum_stock_act.' = 0) or (
-                    ('.$sum_stock_act.' < mat.stock_min) or (
-                        ('.$sum_stock_act.' > mat.stock_min) and ((100.0*('.$sum_stock_act.' - mat.stock_min) / '.$sum_stock_act.') < 30)
-                    )
-                )');
+                $query->where('('.$sum_stock_act.' = 0) or 
+                    ('.$sum_stock_act.' < mat.stock_min or 
+                        ('.$sum_stock_act.' > mat.stock_min) and ((100*('.$sum_stock_act.' - mat.stock_min) / '.$sum_stock_act.') < 30)
+                    )');
                 break;
             case "P":
                 //Queda poco stock
                 $query->where('('.$sum_stock_act.' <> 0) and (
-                    ('.$sum_stock_act.' = mat.stock_min) or  (
-                        ('.$sum_stock_act.' > mat.stock_min) and ((100.0*('.$sum_stock_act.' - mat.stock_min) / '.$sum_stock_act.') BETWEEN 30 AND 60)
+                    ('.$sum_stock_act.' = mat.stock_min or  
+                        ('.$sum_stock_act.' > mat.stock_min and ((100*('.$sum_stock_act.' - mat.stock_min) / '.$sum_stock_act.') BETWEEN 30 AND 60))
                     )
                 )');
                 break;
             case "S":
                 //Suficiente stock
                 $query->where('('.$sum_stock_act.' <> 0) and (
-                    ('.$sum_stock_act.' > mat.stock_min) and ((100.0*('.$sum_stock_act.' - mat.stock_min) / '.$sum_stock_act.') > 60)
+                    ('.$sum_stock_act.' > mat.stock_min) and ((100*('.$sum_stock_act.' - mat.stock_min) / '.$sum_stock_act.') > 60)
                 )');
                 break;
         }

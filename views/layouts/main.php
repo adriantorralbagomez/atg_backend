@@ -8,7 +8,7 @@
 use yii\helpers\Html;
 
 $bundle = yiister\gentelella\assets\Asset::register($this);
-
+$menu = [];
 //Mostrar menú lateral si se ha iniciado sesión
 if (!Yii::$app->user->isGuest) {
     if(Yii::$app->user->identity->rol == "A"){
@@ -20,8 +20,6 @@ if (!Yii::$app->user->isGuest) {
             "items" => require '_menuG.php'
         ];
     }
-} else {
-    $menu = [];
 }
 ?>
 <?php $this->beginPage(); ?>
