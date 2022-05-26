@@ -285,7 +285,12 @@ class OrdenController extends Controller
                 case 'L': case 'ME': case 'CC':
                     //Materiales: caja final, cajas y palets expedición
                     //SE COMPRUEBAN EN LÍNEA DE PRODUCCIÓN PARA ASÍ PEDIRLOS ANTES DE QUE LLEGUEN
-                    $mats = Material::find()->where(["id" => [3, 4, 5]])->asArray()->all();
+                    $mats = [];
+                    if($model->estado == 'L'){
+                        $mats = Material::find()->where(["id" => [3, 4, 5]])->asArray()->all();
+                    }else{//Mal estado y control de calidad
+                        $mats = Material::find()->where(["id" => [1, 2]])->asArray()->all();
+                    }
                     //COMPROBAR SI HAY STOCK Y SI NO PEDIR
                     $this->compr_stock($mats);
                     //CALCULAR COSTE
