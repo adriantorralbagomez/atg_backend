@@ -197,10 +197,10 @@ class OrdenController extends Controller
     }
 
     public function compr_stock($mats)
-    {//COMPROBAR STOCK Y PEDIR SI NO HAY SUFICIENTE
+    { //COMPROBAR STOCK Y PEDIR SI NO HAY SUFICIENTE
         foreach ($mats as $mat) {
             $stock_act = Material::calc_stock_act($mat["id"]);
-            if($stock_act > $mat["stock_min"]){
+            if ($stock_act > $mat["stock_min"]) {
                 //Comprobar si hay suficiente stock
                 $dif = $stock_act - $mat["stock_min"];
                 $porcentaje = ((float)$dif * 100) / $stock_act;
@@ -209,30 +209,30 @@ class OrdenController extends Controller
                     $restante = $stock_act - $mat["stock_min"];
                     $extra = $mat["stock_min"] * 40 / 100;
                     $cantidad = $extra + $restante;
-                    $prmt = ProveedorMaterial::find()->where(["material_id"=>$mat["id"]])->orderBy(['precio' => SORT_ASC])->one();
+                    $prmt = ProveedorMaterial::find()->where(["material_id" => $mat["id"]])->orderBy(['precio' => SORT_ASC])->one();
                     //Cerca del mínimo de stock
                     $this->pedirpedido($prmt, $dif * 2);
                 }
-            }else if($stock_act < $mat["stock_min"]){
+            } else if ($stock_act < $mat["stock_min"]) {
                 //Stock actual por debajo del mínimo
                 $restante = $mat["stock_min"] - $stock_act;
                 $extra = $mat["stock_min"] * 40 / 100;
                 $cantidad = $extra + $restante;
-                $prmt = ProveedorMaterial::find()->where(["material_id"=>$mat["id"]])->orderBy(['precio' => SORT_ASC])->one();
+                $prmt = ProveedorMaterial::find()->where(["material_id" => $mat["id"]])->orderBy(['precio' => SORT_ASC])->one();
                 $this->pedirpedido($prmt, $cantidad);
-            }else if($stock_act == $mat["stock_min"] || $stock_act == 0){
+            } else if ($stock_act == $mat["stock_min"] || $stock_act == 0) {
                 //Stock actual es el mínimo o 0
                 $restante = $mat["stock_min"];
                 $extra = $mat["stock_min"] * 40 / 100;
                 $cantidad = $extra + $restante;
-                $prmt = ProveedorMaterial::find()->where(["material_id"=>$mat["id"]])->orderBy(['precio' => SORT_ASC])->one();
+                $prmt = ProveedorMaterial::find()->where(["material_id" => $mat["id"]])->orderBy(['precio' => SORT_ASC])->one();
                 $this->pedirpedido($prmt, $cantidad);
             }
         }
     }
 
     public function comprobar_costes($model)
-    {//Comprobar que se rellenen costes, si no están rellenados se ponen a 0
+    { //Comprobar que se rellenen costes, si no están rellenados se ponen a 0
         if ($model->coste == null) {
             $model->coste = 0;
         }
@@ -257,6 +257,63 @@ class OrdenController extends Controller
         return $model;
     }
 
+    public function lineaProduccion($model)
+    {
+        //Materiales: caja final, cajas y palets expedición
+        //SE COMPRUEBAN EN LÍNEA DE PRODUCCIÓN PARA ASÍ PEDIRLOS ANTES DE QUE LLEGUEN
+        $mats = [];
+        if ($model->estado == 'L') {
+            $mats = Material::find()->where(["id" => [3, 4, 5]])->asArray()->all();
+        } else { //Mal estado y control de calidad
+            $mats = Material::find()->where(["id" => [1, 2]])->asArray()->all();
+        }
+        //COMPROBAR SI HAY STOCK Y SI NO PEDIR
+        $this->compr_stock($mats);
+        //CALCULAR COSTE
+        //-----------------
+        $coste_prod_total = 0;
+        $coste_cajas_prod = 0;
+        $npaletprod = 0;
+        //Obtener todas las cajas menos las de Expedición
+        $cajas_prod = Caja::find()->where(["orden_id" => $model->id])->andWhere(["<>", "estado", "E"])->all();
+        foreach ($cajas_prod as $cajaprod) { //calcular coste cajas
+            $coste_cajas_prod = $coste_cajas_prod + $cajaprod["proveedorMaterial"]["precio"];
+        }
+
+        //Calcular el coste de los palets de campo
+        //En un palet caben aproximadamente 100 cajas (los palets soportan de media 1500kg)
+        //1500 entre 15kg = 100 cajas
+        if (count($cajas_prod) > 100) {
+            $npaletprod = ceil(count($cajas_prod) / 100);
+        } else {
+            $npaletprod = 1;
+        }
+        //Obtener proveedor de palets de campo (hasta producción) más barato
+        $prov_paletprod = ProveedorMaterial::find()->where(["material_id" => 2])->orderBy(['precio' => SORT_ASC])->one();
+        $coste_palets_prod = $prov_paletprod["precio"] * $npaletprod;
+
+        $coste_prod_total = $coste_cajas_prod + $coste_palets_prod;
+        $model->coste = $coste_prod_total;
+        $model->coste_cajas_prod = $coste_cajas_prod;
+        $model->coste_palets_prod = $coste_palets_prod;
+        $model->coste_prod_total = $coste_prod_total;
+        return $model;
+    }
+
+    public function rellenarDatosCajas($num_caj_campo, $model_id, $tipocaja_id, $provmat_id, $estado)
+    {
+        $datos_cajas = [];
+        for ($c = 0; $c < $num_caj_campo; $c++) {
+            $datos_cajas[$c] = [
+                "orden_id" => $model_id,
+                "tipocaja_id" => $tipocaja_id,
+                "proveedor_material_id" => $provmat_id,
+                "estado" => $estado,
+            ];
+        }
+        return $datos_cajas;
+    }
+
     /**
      * Updates an existing Orden model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -274,6 +331,34 @@ class OrdenController extends Controller
 
             $model = $this->comprobar_costes($model);
 
+            //Cambiar estado de todas las cajas
+            try {
+                switch ($model->estado) {
+                    case 'L': //Si se pasa a producción
+                        $this->cambiarEstado($model->id, "L");
+                        break;
+                    case 'E': //Si se pasan a expedición -> crear nuevas cajas (0,5 kg)
+                        //Obtener cajas con estado L (son las que se pasarán a cajas nuevas de E)
+                        $cajs_linea = Caja::find()->where(["orden_id" => $model->id])->andWhere(["estado" => "L"])->all();
+                        //número de cajas de expedición = 10kg (kg caja) * nº cajas en estado línea / 0,5 (kg de las cajas finales)
+                        $num_caj_exp = ceil(10 * count($cajs_linea) / 0.5);
+                        $provmat_cajexp = ProveedorMaterial::find()->where(["material_id" => 1])->orderBy(['precio' => SORT_ASC])->one();
+                        //crear cajas expedición
+                        try {
+                            $datos_cajas = $datos_cajas = $this->rellenarDatosCajas($num_caj_exp, $model->id, 3, $provmat_cajexp["id"], "E");
+                            Yii::$app->db->createCommand()->batchInsert('caja', ['orden_id', 'tipocaja_id', 'proveedor_material_id', 'estado'], $datos_cajas)->execute();
+                        } catch (Exception $e) {
+                            var_dump($e);
+                        }
+                        break;
+                    default: //Caso de ME, CC, P y T
+                        Caja::updateAll(['estado' => $model->estado], ['=', 'orden_id', $model->id]);
+                        break;
+                }
+            } catch (Exception $e) {
+                var_dump($e);
+            }
+
             //comprobar cajas
             switch ($model->estado) {
                 case 'T':
@@ -281,46 +366,25 @@ class OrdenController extends Controller
                     $mats = Material::find()->where(["id" => [1, 2]])->asArray()->all();
                     //COMPROBAR SI HAY STOCK Y SI NO PEDIR
                     $this->compr_stock($mats);
+                    //Generar cajas de campo (cajas de 10kg)
+                    $num_caj_campo = ceil($model->cantidad / 10);
+                    //obtener provedor de material con precio más barato
+                    $provmat_cajcampo = ProveedorMaterial::find()->where(["material_id" => 1])->orderBy(['precio' => SORT_ASC])->one();
+                    try {
+                        $datos_cajas = $datos_cajas = $this->rellenarDatosCajas($num_caj_campo, $model->id, 1, $provmat_cajcampo["id"], "T");
+                        Yii::$app->db->createCommand()->batchInsert('caja', ['orden_id', 'tipocaja_id', 'proveedor_material_id', 'estado'], $datos_cajas)->execute();
+                    } catch (Exception $e) {
+                        var_dump($e);
+                    }
                     break;
-                case 'L': case 'ME': case 'CC':
-                    //Materiales: caja final, cajas y palets expedición
-                    //SE COMPRUEBAN EN LÍNEA DE PRODUCCIÓN PARA ASÍ PEDIRLOS ANTES DE QUE LLEGUEN
-                    $mats = [];
-                    if($model->estado == 'L'){
-                        $mats = Material::find()->where(["id" => [3, 4, 5]])->asArray()->all();
-                    }else{//Mal estado y control de calidad
-                        $mats = Material::find()->where(["id" => [1, 2]])->asArray()->all();
-                    }
-                    //COMPROBAR SI HAY STOCK Y SI NO PEDIR
-                    $this->compr_stock($mats);
-                    //CALCULAR COSTE
-                    //-----------------
-                    $coste_prod_total = 0;
-                    $coste_cajas_prod = 0;
-                    $npaletprod = 0;
-                    //Obtener todas las cajas menos las de Expedición
-                    $cajas_prod = Caja::find()->where(["orden_id" => $model->id])->andWhere(["<>", "estado", "E"])->all();
-                    foreach ($cajas_prod as $cajaprod) { //calcular coste cajas
-                        $coste_cajas_prod = $coste_cajas_prod + $cajaprod["proveedorMaterial"]["precio"];
-                    }
-
-                    //Calcular el coste de los palets de campo
-                    //En un palet caben aproximadamente 100 cajas (los palets soportan de media 1500kg)
-                    //1500 entre 15kg = 100 cajas
-                    if (count($cajas_prod) > 100) {
-                        $npaletprod = ceil(count($cajas_prod) / 100);
-                    } else {
-                        $npaletprod = 1;
-                    }
-                    //Obtener proveedor de palets de campo (hasta producción) más barato
-                    $prov_paletprod = ProveedorMaterial::find()->where(["material_id" => 2])->orderBy(['precio' => SORT_ASC])->one();
-                    $coste_palets_prod = $prov_paletprod["precio"] * $npaletprod;
-
-                    $coste_prod_total = $coste_cajas_prod + $coste_palets_prod;
-                    $model->coste = $coste_prod_total;
-                    $model->coste_cajas_prod = $coste_cajas_prod;
-                    $model->coste_palets_prod = $coste_palets_prod;
-                    $model->coste_prod_total = $coste_prod_total;
+                case 'L':
+                    $model = $this->lineaProduccion($model);
+                    break;
+                case 'ME':
+                    $model = $this->lineaProduccion($model);
+                    break;
+                case 'CC':
+                    $model = $this->lineaProduccion($model);
                     break;
                 case 'E':
                     //CALCULAR COSTE
@@ -369,8 +433,8 @@ class OrdenController extends Controller
             }
 
             //Transacción correcta
-            $trans->commit();
             if ($model->save()) {
+                $trans->commit();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
@@ -380,8 +444,24 @@ class OrdenController extends Controller
         ]);
     }
 
+    public function cambiarEstado($model_id, $estado)
+    {
+        $condiciones = [
+            'and',
+            ['=', 'orden_id', $model_id],
+            ['<>', 'estado', "ME"],
+            ['<>', 'estado', "CC"],
+        ];
+        if ($estado == "L") {
+            Caja::updateAll(['estado' => $estado], $condiciones);
+        } else { //expedición -> cambiar tipo de caja
+            $prov_cajexp = ProveedorMaterial::find()->where(["material_id" => 4])->orderBy(['precio' => SORT_ASC])->one();
+            Caja::updateAll(['estado' => $estado, 'tipocaja_id' => 3, 'proveedor_material_id' => $prov_cajexp["id"]], $condiciones);
+        }
+    }
+
     function pedirpedido($prmt, $cant)
-    {//Pedir material
+    { //Pedir material
         $pedstock = new Pedidostock();
         $pedstock->proveedor_material_id = $prmt->id;
         $pedstock->cantidad = $cant;
